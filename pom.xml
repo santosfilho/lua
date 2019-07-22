@@ -16,18 +16,55 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<io.springfox.version>2.9.2</io.springfox.version>
 	</properties>
 
+	<developers>
+		<developer>
+			<id>santosfilho</id>
+			<name>José dos Santos</name>
+			<email>josecnrn@gmail.com</email>
+			<url>https://github.com/santosfilho</url>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>-03</timezone>
+		</developer>
+	</developers>
+
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${io.springfox.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${io.springfox.version}</version>
 		</dependency>
 	</dependencies>
 
