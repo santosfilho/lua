@@ -26,7 +26,7 @@ public class EquipamentoRepository {
      * @return
      */
     public List<EquipamentoDTO> getEquipamentos(Long idEquipamento, Long tombamento, String nome, String marca, Integer status) {
-        String sql = "SELECT * FROM equipamento WHERE 1=1 ";
+        String sql = "SELECT * FROM public.equipamento WHERE 1=1 ";
         List<Object> params = new ArrayList<>();
 
         if (idEquipamento != null) {
