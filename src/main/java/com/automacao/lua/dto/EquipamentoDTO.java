@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.Date;
+
 /**
  * @author José dos Santos (josecnrn@gmail.com)
  * @since 22/07/19.
@@ -15,17 +17,24 @@ public class EquipamentoDTO {
     @JsonProperty("id_equipamento")
     private Long idEquipamento;
 
-    @JsonProperty("nome")
     private String nome;
 
-    @JsonProperty("descricao")
     private String descricao;
 
-    @JsonProperty("localizacao")
-    private String localizacao;
-
-    @JsonProperty("status")
     private Integer status;
+
+    private String marca;
+
+    @JsonProperty("data_cadastro")
+    private Date dataCadastro;
+
+    private Long tombamento;
+
+    @JsonProperty("id_local")
+    private Long idLocal;
+
+    @JsonProperty("potencia")
+    private Long potencia;
 
     @ApiModelProperty(name = "id_equipamento", value = "Identificador do equipamento", dataType = "java.lang.Long", required = true)
     public Long getIdEquipamento() {
@@ -54,13 +63,13 @@ public class EquipamentoDTO {
         this.descricao = descricao;
     }
 
-    @ApiModelProperty(name = "localizacao", value = "Localização do equipamento", dataType = "java.lang.String", required = true)
-    public String getLocalizacao() {
-        return localizacao;
+    @ApiModelProperty(name = "marca", value = "marca do equipamento", dataType = "java.lang.String", required = true)
+    public String getMarca() {
+        return marca;
     }
 
-    public void setLocalizacao(String localizacao) {
-        this.localizacao = localizacao;
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 
     @ApiModelProperty(name = "status", value = "-1: Defeituoso, 0: Desligado, 1: Ligado", dataType = "java.lang.Integer", required = true)
@@ -70,5 +79,38 @@ public class EquipamentoDTO {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public Long getTombamento() {
+        return tombamento;
+    }
+
+    public void setTombamento(Long tombamento) {
+        this.tombamento = tombamento;
+    }
+
+    public Long getIdLocal() {
+        return idLocal;
+    }
+
+    public void setIdLocal(Long idLocal) {
+        this.idLocal = idLocal;
+    }
+
+    @ApiModelProperty(name = "potencia", value = "Potência do equipamento em Watts", dataType = "java.lang.Long")
+    public Long getPotencia() {
+        return potencia;
+    }
+
+    public void setPotencia(Long potencia) {
+        this.potencia = potencia;
     }
 }

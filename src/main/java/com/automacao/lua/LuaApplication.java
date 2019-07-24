@@ -21,6 +21,8 @@ public class LuaApplication {
 
 	@Bean
 	public Docket swagger() {
+
+		//http://localhost:8080/swagger-ui.html
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.automacao.lua"))
@@ -31,9 +33,9 @@ public class LuaApplication {
 
 	private ApiInfo metaData() {
 		return new ApiInfoBuilder()
-				.title("Spring Boot REST API")
-				.description("\"Spring Boot REST API for greeting people\"")
-				.version("1.0.0")
+				.title("API - Lua")
+				.description("Sistema de Controle, gerenciamento e monitoração de equipamentos elétricos.")
+				.version("0.1")
 				.license("Apache License Version 2.0")
 				.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
 				.build();
@@ -41,13 +43,11 @@ public class LuaApplication {
 
 	//@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("swagger-ui.html")
+		registry.addResourceHandler("swagger-u.html")
 				.addResourceLocations("classpath:/META-INF/resources/");
 
 		registry.addResourceHandler("/webjars/**")
 				.addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
-
-
 
 }
