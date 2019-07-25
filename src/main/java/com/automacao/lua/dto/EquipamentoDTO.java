@@ -1,6 +1,7 @@
 package com.automacao.lua.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,6 +27,7 @@ public class EquipamentoDTO {
     private String marca;
 
     @JsonProperty("data_cadastro")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date dataCadastro;
 
     private Long tombamento;

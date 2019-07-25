@@ -25,7 +25,7 @@ public class EquipamentoRepository {
      * @param status
      * @return
      */
-    public List<EquipamentoDTO> getEquipamentos(Long idEquipamento, Long tombamento, String nome, String marca, Integer status) {
+    public List<EquipamentoDTO> getEquipamentos(Long idEquipamento, Long idLocal, Long tombamento, String nome, String marca, Integer status) {
         String sql = "SELECT * FROM public.equipamento WHERE 1=1 ";
         List<Object> params = new ArrayList<>();
 
@@ -34,18 +34,23 @@ public class EquipamentoRepository {
             params.add(idEquipamento);
         }
 
+        if (idLocal != null) {
+            sql += " AND id_local = ? ";
+            params.add(idLocal);
+        }
+
         if (tombamento != null) {
             sql += " AND tombamento = ? ";
             params.add(tombamento);
         }
 
         if (nome != null && !nome.isEmpty()) {
-            sql += " AND nome LIKE ('%' || ? || '%')";
+            sql += " AND sem_acento(nome) ILIKE sem_acento('%' || ? || '%') ";
             params.add(nome);
         }
 
         if (marca != null && !marca.isEmpty()) {
-            sql += " AND marca LIKE ('%' || ? || '%')";
+            sql += " AND sem_acento(marca) ILIKE sem_acento('%' || ? || '%') ";
             params.add(marca);
         }
 
@@ -55,5 +60,9 @@ public class EquipamentoRepository {
         }
 
         return jdbcTemplate.query(sql, params.toArray(), new BeanPropertyRowMapper(EquipamentoDTO.class));
+    }
+
+    public void cadastrarEquipamento(Long idEquipamento, Long idLocal, Long tombamento, String nome, String marca, Integer status){
+
     }
 }

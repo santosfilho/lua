@@ -14,10 +14,10 @@ public class EquipamentoServices {
     EquipamentoRepository equipamentoRepository;
 
     public EquipamentoDTO getEquipamento(Long idEquipamento){
-        return equipamentoRepository.getEquipamentos(idEquipamento, null, null, null, null).get(0);
+        return equipamentoRepository.getEquipamentos(idEquipamento,null, null, null, null, null).get(0);
     }
 
-    public List<EquipamentoDTO> getEquipamentos(Long tombamento, String nome, String marca, Integer status) {
-        return equipamentoRepository.getEquipamentos(null, tombamento, nome, marca, status);
+    public List<EquipamentoDTO> getEquipamentos(Long idLocal, Long tombamento, String nome, String marca, Integer status) {
+        return equipamentoRepository.getEquipamentos(null, idLocal, tombamento, nome, marca, status);
     }
 }
