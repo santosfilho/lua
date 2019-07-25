@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="63eee21e-e970-494b-a7a8-2898fffbebf9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/automacao/lua/controller/LocalController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/automacao/lua/dto/LocalDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/automacao/lua/repository/LocalRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/automacao/lua/service/LocalServices.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/automacao/lua/repository/EquipamentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/automacao/lua/repository/EquipamentoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/automacao/lua/dto/EquipamentoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/automacao/lua/dto/EquipamentoDTO.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -22,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/automacao/lua/controller/LocalController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="165">
+              <caret line="11" column="22" lean-forward="true" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -39,6 +34,18 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
               <caret line="16" column="14" lean-forward="true" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/automacao/lua/dto/EquipamentoDTO.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="146">
+              <caret line="38" column="94" selection-start-line="38" selection-start-column="94" selection-end-line="38" selection-end-column="94" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -95,12 +102,12 @@
         <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/LuaApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/service/EquipamentoServices.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/controller/EquipamentoController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/dto/EquipamentoDTO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/dto/LocalDTO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/repository/EquipamentoRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/repository/LocalRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/service/LocalServices.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/controller/LocalController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/automacao/lua/dto/EquipamentoDTO.java" />
       </list>
     </option>
   </component>
@@ -127,8 +134,8 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="1600" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="5120" />
     <option name="width" value="1920" />
     <option name="height" value="1053" />
   </component>
@@ -181,25 +188,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lua" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lua" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lua" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lua" type="462c0819:PsiDirectoryNode" />
               <item name="dto" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lua" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lua" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lua" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lua" type="b2602c69:ProjectViewProjectNode" />
@@ -267,12 +256,12 @@
       <updated>1563813690936</updated>
       <workItem from="1563813696418" duration="5295000" />
       <workItem from="1563820227955" duration="4264000" />
-      <workItem from="1563982866356" duration="9966000" />
+      <workItem from="1563982866356" duration="11095000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19525000" />
+    <option name="totallyTimeSpent" value="20654000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -284,10 +273,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1600" y="0" width="1920" height="1053" extended-state="6" />
-    <editor active="true" />
+    <frame x="5120" y="0" width="1920" height="1053" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.18854569" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18836713" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -298,7 +286,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4993565" weight="0.45115682" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.5244216" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.52309346" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32904884" />
@@ -368,34 +356,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/automacao/lua/dto/EquipamentoDTO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="38" column="132" lean-forward="true" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="132" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#845#846#0" expanded="true" />
-            <element signature="e#881#882#0" expanded="true" />
-            <element signature="e#2318#2319#0" expanded="true" />
-            <element signature="e#2353#2354#0" expanded="true" />
-            <element signature="e#2407#2408#0" expanded="true" />
-            <element signature="e#2455#2456#0" expanded="true" />
-            <element signature="e#2490#2491#0" expanded="true" />
-            <element signature="e#2523#2524#0" expanded="true" />
-            <element signature="e#2573#2574#0" expanded="true" />
-            <element signature="e#2617#2618#0" expanded="true" />
-            <element signature="e#2649#2650#0" expanded="true" />
-            <element signature="e#2679#2680#0" expanded="true" />
-            <element signature="e#2723#2724#0" expanded="true" />
-            <element signature="e#2761#2762#0" expanded="true" />
-            <element signature="e#2794#2795#0" expanded="true" />
-            <element signature="e#2825#2826#0" expanded="true" />
-            <element signature="e#2871#2872#0" expanded="true" />
-            <element signature="e#2911#2912#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/automacao/lua/service/EquipamentoServices.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -460,8 +420,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/automacao/lua/controller/LocalController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="165">
+          <caret line="11" column="22" lean-forward="true" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/automacao/lua/dto/EquipamentoDTO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="38" column="94" selection-start-line="38" selection-start-column="94" selection-end-line="38" selection-end-column="94" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

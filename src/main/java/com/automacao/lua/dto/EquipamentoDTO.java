@@ -81,6 +81,7 @@ public class EquipamentoDTO {
         this.status = status;
     }
 
+    @ApiModelProperty(name = "data_cadastro", value = "Data de cadastro do equipamento", dataType = "java.lang.Date")
     public Date getDataCadastro() {
         return dataCadastro;
     }
