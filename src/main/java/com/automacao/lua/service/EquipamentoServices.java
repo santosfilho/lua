@@ -36,4 +36,8 @@ public class EquipamentoServices {
 
         return null;
     }
+
+    public int removerEquipamento(Long idEquipamento){
+        return equipamentoRepository.removerEquipamento(idEquipamento);
+    }
 }

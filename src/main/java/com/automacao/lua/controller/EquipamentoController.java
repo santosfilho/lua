@@ -3,6 +3,7 @@ package com.automacao.lua.controller;
 import com.automacao.lua.dto.CadastroEquipamentoDTO;
 import com.automacao.lua.dto.EquipamentoDTO;
 import com.automacao.lua.service.EquipamentoServices;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/equipamentos")
+@Api(value = "Equipamentos", description = "Serviço referente os equipamentos", tags = "Equipamentos")
 public class EquipamentoController {
 
     @Autowired
@@ -28,7 +30,7 @@ public class EquipamentoController {
             @ApiParam(name = "idLocal", value = "Identificador da localização do equipamento") @RequestParam(value = "idLocal", required = false) Long idLocal,
             @ApiParam(name = "nome", value = "Nome do equipamento") @RequestParam(value = "nome", required = false) String nome,
             @ApiParam(name = "marca", value = "Marca do equipamento") @RequestParam(value = "marca", required = false) String marca,
-            @ApiParam(name = "status", value = "Número de tombamento do equipamento") @RequestParam(value = "tombamento", required = false) Integer status
+            @ApiParam(name = "status", value = "Status do equipamento (-1: Defeituoso, 0: Desligado, 1: Ligado) ") @RequestParam(value = "tombamento", required = false) Integer status
     ) {
         return equipamentoServices.getEquipamentos(idLocal, tombamento, nome, marca, status);
     }
@@ -47,10 +49,17 @@ public class EquipamentoController {
             @ApiParam(name = "Equipamento", value = "Equipamento") @RequestBody CadastroEquipamentoDTO equipamento
     ) {
         if (equipamentoServices.cadastrarEquipamento(equipamento) != null)
-            return ResponseEntity.status(HttpStatus.OK).headers(new HttpHeaders()).body(equipamentoServices.cadastrarEquipamento(equipamento));
-        else
-            return new ResponseEntity("Erro ao cadastrar equipamento verifique idLocal e idCategoria.", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.CREATED).headers(new HttpHeaders()).body(equipamentoServices.cadastrarEquipamento(equipamento));
+        return new ResponseEntity("Erro ao cadastrar equipamento verifique idLocal e idCategoria.", HttpStatus.BAD_REQUEST);
     }
 
-
+    @RequestMapping(value = "/{idEquipamento}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Deleta um equipamento", response = String.class, httpMethod = "DELETE")
+    public ResponseEntity removerEquipamento(
+            @ApiParam(name = "idEquipamento", value = "Identificador do equipamento") @PathVariable(value = "idEquipamento") Long idEquipamento
+    ) {
+        if (equipamentoServices.removerEquipamento(idEquipamento) == 1)
+            return new ResponseEntity("Equipamento removido com sucesso.", HttpStatus.OK);
+        return new ResponseEntity("Equipamento não encontrado.", HttpStatus.BAD_REQUEST);
+    }
 }

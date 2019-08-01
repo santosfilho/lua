@@ -3,6 +3,7 @@ package com.automacao.lua.controller;
 import com.automacao.lua.dto.EquipamentoDTO;
 import com.automacao.lua.dto.LocalDTO;
 import com.automacao.lua.service.LocalServices;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/locais")
+@Api(value = "Locais", description = "Serviço referente aos locais", tags = "Locais")
 public class LocalController {
 
     @Autowired

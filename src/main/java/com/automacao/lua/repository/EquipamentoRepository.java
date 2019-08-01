@@ -63,10 +63,27 @@ public class EquipamentoRepository {
     }
 
 
-    public EquipamentoDTO cadastrarEquipamento(CadastroEquipamentoDTO equipamento) throws Exception{
-        String sql = " INSERT INTO public.equipamento VALUES (DEFAULT, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?) ";
-        List<Object> params = new ArrayList<>();
+    public EquipamentoDTO cadastrarEquipamento(CadastroEquipamentoDTO equipamento) {
+        int sucess = jdbcTemplate.update(" INSERT INTO public.equipamento VALUES (DEFAULT, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?) ", popularParametros(equipamento).toArray());
+        if (sucess == 1)
+            return ultimoEquipamento();
+        return null;
+    }
 
+    public EquipamentoDTO atualizarEquipamento(CadastroEquipamentoDTO equipamento) {
+        int sucess = jdbcTemplate.update(" UPDATE INTO public.equipamento VALUES (DEFAULT, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?) ", popularParametros(equipamento).toArray());
+        if (sucess == 1)
+            return ultimoEquipamento();
+        return null;
+    }
+
+    public int removerEquipamento(Long idEquipamento) {
+        StringBuilder sql = new StringBuilder(" DELETE FROM equipamento WHERE id_equipamento = ? ");
+        return jdbcTemplate.update(sql.toString(), new Object[]{idEquipamento});
+    }
+
+    private List<Object> popularParametros(CadastroEquipamentoDTO equipamento) {
+        List<Object> params = new ArrayList<>();
         params.add(equipamento.getNome());
         params.add(equipamento.getDescricao());
         params.add(equipamento.getMarca());
@@ -77,12 +94,14 @@ public class EquipamentoRepository {
         params.add(equipamento.getPotencia());
         params.add(equipamento.getIdCategoria());
 
-        Integer up = jdbcTemplate.update(sql, params.toArray());
+        return params;
+    }
 
-        if (up == 1){
-            return ((List<EquipamentoDTO>) jdbcTemplate.query("SELECT * FROM public.equipamento ORDER BY id_equipamento DESC LIMIT 1 ", new Object[]{} , new BeanPropertyRowMapper(EquipamentoDTO.class))).get(0);
-        }
-
-        return null;
+    private EquipamentoDTO ultimoEquipamento() {
+        return ((List<EquipamentoDTO>) jdbcTemplate.query(
+                "SELECT * FROM public.equipamento ORDER BY id_equipamento DESC LIMIT 1 ",
+                new Object[]{},
+                new BeanPropertyRowMapper(EquipamentoDTO.class))
+        ).get(0);
     }
 }
