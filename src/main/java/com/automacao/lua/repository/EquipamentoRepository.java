@@ -26,7 +26,7 @@ public class EquipamentoRepository {
      * @return
      */
     public List<EquipamentoDTO> getEquipamentos(Long idEquipamento, Long idLocal, Long tombamento, String nome, String marca, Integer status) {
-        String sql = "SELECT * FROM public.equipamento WHERE 1=1 ";
+        String sql = "SELECT * FROM equipamento WHERE 1=1 ";
         List<Object> params = new ArrayList<>();
 
         if (idEquipamento != null) {
@@ -71,9 +71,36 @@ public class EquipamentoRepository {
     }
 
     public EquipamentoDTO atualizarEquipamento(CadastroEquipamentoDTO equipamento) {
-        int sucess = jdbcTemplate.update(" UPDATE INTO public.equipamento VALUES (DEFAULT, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?) ", popularParametros(equipamento).toArray());
-        if (sucess == 1)
-            return ultimoEquipamento();
+        List<Object> params = new ArrayList<>();
+        String sql = "UPDATE equipamento SET id_equipamento = ? ";
+        params.add(equipamento.getIdEquipamento());
+
+        if (equipamento.getNome() != null) {
+            sql += ", nome = ? ";
+            params.add(equipamento.getNome());
+        }
+
+        if (equipamento.getDescricao() != null) {
+            sql += ", descricao = ? ";
+            params.add(equipamento.getDescricao());
+        }
+
+        if (equipamento.getStatus() != null) {
+            sql += ", status    = ? ";
+            params.add(equipamento.getStatus());
+        }
+
+        if (equipamento.getIdLocal() != null && equipamento.getIdLocal() > 0) {
+            sql += ", id_local  = ? ";
+            params.add(equipamento.getIdLocal());
+        }
+
+        sql += " WHERE equipamento.id_equipamento = ? ";
+        params.add(equipamento.getIdEquipamento());
+
+        if (params.size() > 2 && jdbcTemplate.update(sql, params.toArray()) == 1)
+                return ultimoEquipamento();
+
         return null;
     }
 

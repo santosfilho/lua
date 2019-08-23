@@ -24,6 +24,18 @@ public class CadastroEquipamentoDTO {
 
     private String modelo;
 
+    private Integer status;
+
+    private Long idEquipamento;
+
+    @ApiModelProperty(name = "idEquipamento", value = "Identificador do equipamento", dataType = "java.lang.Long")
+    public Long getIdEquipamento() {
+        return idEquipamento;
+    }
+
+    public void setIdEquipamento(Long idEquipamento) {
+        this.idEquipamento = idEquipamento;
+    }
     @ApiModelProperty(name = "nome", value = "Nome do equipamento", dataType = "java.lang.String", required = true)
     public String getNome() {
         return nome;
@@ -90,5 +102,14 @@ public class CadastroEquipamentoDTO {
 
     public void setModelo(String modelo) {
         this.modelo = modelo;
+    }
+
+    @ApiModelProperty(name = "status", value = "-1: Defeituoso, 0: Desligado, 1: Ligado", dataType = "java.lang.Integer")
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
