@@ -48,9 +48,12 @@ public class EquipamentoController {
     public ResponseEntity cadastrarEquipamento(
             @ApiParam(name = "Equipamento", value = "Equipamento") @RequestBody CadastroEquipamentoDTO equipamento
     ) {
-        if (equipamentoServices.cadastrarEquipamento(equipamento) != null)
-            return ResponseEntity.status(HttpStatus.CREATED).headers(new HttpHeaders()).body(equipamentoServices.cadastrarEquipamento(equipamento));
-        return new ResponseEntity("Erro ao cadastrar equipamento verifique idLocal e idCategoria.", HttpStatus.BAD_REQUEST);
+        CadastroEquipamentoDTO novoEquipamento = equipamentoServices.cadastrarEquipamento(equipamento);
+
+        if (novoEquipamento != null)
+            return ResponseEntity.status(HttpStatus.CREATED).body(novoEquipamento);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar equipamento, verifique idLocal e idCategoria.");
     }
 
     @RequestMapping(value = "/{idEquipamento}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -60,6 +63,7 @@ public class EquipamentoController {
     ) {
         if (equipamentoServices.removerEquipamento(idEquipamento) == 1)
             return new ResponseEntity("Equipamento removido com sucesso.", HttpStatus.OK);
+
         return new ResponseEntity("Equipamento não encontrado.", HttpStatus.BAD_REQUEST);
     }
 }

@@ -44,10 +44,14 @@ public class EventoController {
 
     @RequestMapping(method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Cadastra um evento.", response = EventoDTO.class, httpMethod = "POST")
-    public EventoDTO addEvento(
+    public ResponseEntity addEvento(
             @ApiParam(name = "evento", value = "Informações do evento") @RequestBody EventoDTO evento
     ) throws Exception {
-        return eventoService.addEvento(evento);
+        EventoDTO novoEvento = eventoService.addEvento(evento);
+        if (novoEvento != null)
+            return ResponseEntity.status(HttpStatus.CREATED).body(novoEvento);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados de cadastro invalidos.");
     }
 
     @RequestMapping(value = "/{idEvento}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

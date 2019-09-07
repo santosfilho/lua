@@ -17,7 +17,9 @@ public class EquipamentoServices {
     EquipamentoRepository equipamentoRepository;
 
     public EquipamentoDTO getEquipamento(Long idEquipamento) {
-        return equipamentoRepository.getEquipamentos(idEquipamento, null, null, null, null, null).get(0);
+        if (equipamentoRepository.getEquipamentos(idEquipamento, null, null, null, null, null).size() > 0)
+            return equipamentoRepository.getEquipamentos(idEquipamento, null, null, null, null, null).get(0);
+        return null;
     }
 
     public List<EquipamentoDTO> getEquipamentos(Long idLocal, Long tombamento, String nome, String marca, Integer status) {

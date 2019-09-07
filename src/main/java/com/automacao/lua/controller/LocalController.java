@@ -60,6 +60,6 @@ public class LocalController {
         if (localServices.removerLocal(idLocal) == 1)
             return ResponseEntity.status(HttpStatus.OK).body("Local excluido com sucesso.");
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Identificador passado não existe.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Local não encontrado");
     }
 }

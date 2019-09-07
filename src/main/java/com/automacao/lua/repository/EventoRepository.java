@@ -79,12 +79,12 @@ public class EventoRepository {
         StringBuilder sql1 = new StringBuilder(" INSERT INTO public.evento (id_evento ");
         StringBuilder sql2 = new StringBuilder(" VALUES (DEFAULT ");
         List<Object> params = new ArrayList<>();
-
+        /*
         if (evento.getIdEquipamento() != null) {
             sql1.append(", id_equipamento");
             sql2.append(", ? ");
             params.add(evento.getIdEquipamento());
-        }
+        }*/
 
         if (evento.getStatus() != null) {
             sql1.append(", status");
