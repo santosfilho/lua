@@ -15,10 +15,20 @@ public class LocalServices {
     LocalRepository localRepository;
 
     public LocalDTO getLocal(Long idLocal){
-        return localRepository.getLocais(idLocal, null, null, null, null).get(0);
+        if (localRepository.getLocais(idLocal, null, null, null, null).size() > 0)
+            return localRepository.getLocais(idLocal, null, null, null, null).get(0);
+        return null;
     }
 
     public List<LocalDTO> getLocais(Integer capacidade, String localizacao, String descricao, String setor) {
         return localRepository.getLocais(null, capacidade, localizacao, descricao, setor);
+    }
+
+    public LocalDTO addLocal(LocalDTO local){
+        return localRepository.addLocal(local);
+    }
+
+    public int removerLocal(Long idLocal){
+        return localRepository.removerLocal(idLocal);
     }
 }

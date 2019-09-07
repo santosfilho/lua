@@ -1,7 +1,11 @@
 package com.automacao.lua.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ApiModel(value = "LocalDTO", description = "Entidade de representa uma sala, auditorio ou locais de forma geral")
 public class LocalDTO {
@@ -59,5 +63,18 @@ public class LocalDTO {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    /**
+     * @return Array de objetos contendo as caracteristicas do local
+     */
+    @JsonIgnore
+    public List<Object> getLocal(){
+        List<Object> local = new ArrayList<>();
+        local.add(getLocalizacao());
+        local.add(getSetor());
+        local.add(getCapacidade());
+        local.add(getDescricao());
+        return local;
     }
 }

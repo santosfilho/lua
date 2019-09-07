@@ -4,6 +4,7 @@ import com.automacao.lua.dto.LocalDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -14,7 +15,14 @@ public class LocalRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-
+    /**
+     * @param idLocal
+     * @param capacidade
+     * @param localizacao
+     * @param descricao
+     * @param setor
+     * @return
+     */
     public List<LocalDTO> getLocais(Long idLocal, Integer capacidade, String localizacao, String descricao, String setor) {
         String sql = "SELECT * FROM public.local WHERE 1=1 ";
         List<Object> params = new ArrayList<>();
@@ -45,6 +53,33 @@ public class LocalRepository {
         }
 
         return jdbcTemplate.query(sql, params.toArray(), new BeanPropertyRowMapper(LocalDTO.class));
+    }
+
+    /**
+     * @param local
+     * @return
+     */
+    public LocalDTO addLocal(LocalDTO local) {
+        String sql = "INSERT INTO public.local (id_local, localizacao, setor, capacidade, descricao) VALUES (DEFAULT, ?, ?, ?, ?) ";
+
+        int sucess = jdbcTemplate.update(sql, local.getLocal().toArray());
+
+        if (sucess == 1)
+            return ((List<LocalDTO>) jdbcTemplate.query("SELECT id_local, localizacao, setor, capacidade, descricao FROM local ORDER BY id_local DESC LIMIT 1", new Object[]{}, new BeanPropertyRowMapper(LocalDTO.class))).get(0);
+
+        return null;
+    }
+
+    /**
+     * @param idLocal
+     * @return
+     */
+    public int removerLocal(Long idLocal) {
+        String sql = "DELETE FROM local WHERE id_local = ? ";
+
+        int sucess = jdbcTemplate.update(sql, new Object[]{idLocal});
+
+        return sucess;
     }
 
 }
