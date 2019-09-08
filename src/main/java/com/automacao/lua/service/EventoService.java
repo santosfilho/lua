@@ -31,6 +31,10 @@ public class EventoService {
         return eventoRepository.addEvento(evento);
     }
 
+    public int updateEvento(EventoDTO evento){
+        return eventoRepository.updateEvento(evento);
+    }
+
     public int removerEvento(Long idEvento){
         return eventoRepository.removerEvento(idEvento);
     }

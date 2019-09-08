@@ -49,7 +49,7 @@ public class EventoRepository {
         }
 
         if (hora != null) {
-            sql.append(" AND hora = ? ");
+            sql.append(" AND hora <= ? ");
             params.add(hora);
         }
 
@@ -59,7 +59,7 @@ public class EventoRepository {
         }
 
         if (fimCron != null) {
-            sql.append(" AND fim_cron <= ? ");
+            sql.append(" AND fim_cron >= ? ");
             params.add(fimCron);
         }
 
@@ -123,7 +123,13 @@ public class EventoRepository {
         return null;
     }
 
-    public int removerEvento(Long idEvento){
+    public int updateEvento(EventoDTO evento) {
+        String sql = " UPDATE evento SET hora = ? WHERE id_evento = ? ";
+
+        return jdbcTemplate.update(sql, new Object[]{evento.getHora(), evento.getIdEvento()});
+    }
+
+    public int removerEvento(Long idEvento) {
         StringBuilder sql = new StringBuilder(" DELETE FROM evento WHERE id_evento = ? ");
 
         int sucess = jdbcTemplate.update(sql.toString(), new Object[]{idEvento});
