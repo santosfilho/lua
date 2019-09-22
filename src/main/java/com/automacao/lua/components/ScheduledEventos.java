@@ -35,13 +35,16 @@ public class ScheduledEventos {
         //TODO: Deve varrer todos eventos que o fimCron é menor que a data atual e atualizar o a hora do próximo evento
         // a partir do valor do cron
 
+        boolean imprimirLog = false;
+
         Timestamp horaAtual = new Timestamp(System.currentTimeMillis());
 
         List<EventoDTO> eventos = eventoService.getEventos(null, null, horaAtual, null, horaAtual);
         //List<EventoDTO> eventos = eventoService.getEventos(null, null, null, null, null);
-
-        System.out.println("São " + horaAtual);
-        System.out.print("e há " + eventos.size() + " eventos à atualizar");
+        if (imprimirLog) {
+            System.out.println("São " + horaAtual);
+            System.out.print("e há " + eventos.size() + " eventos à atualizar");
+        }
 
         /**
          *  Cron: ("A B C D E F")
@@ -62,13 +65,14 @@ public class ScheduledEventos {
         //final CronSequenceGenerator generator = new CronSequenceGenerator(cronExpression);
         //final Date nextExecutionDate = generator.next(new Date());
         for (EventoDTO evento : eventos) {
-            System.out.print("\nidEvento: " + evento.getIdEvento() + " | hora antiga: " + evento.getHora());
+            if (imprimirLog) System.out.print("\nidEvento: " + evento.getIdEvento() + " | hora antiga: " + evento.getHora());
             String cronExpression = evento.getCron();
             CronSequenceGenerator gerador = new CronSequenceGenerator(cronExpression);
             evento.setHora(new Timestamp(gerador.next(new Date()).getTime()));
-            System.out.print(" -> hora nova: " + evento.getHora());
+            if (imprimirLog) System.out.print(" -> hora nova: " + evento.getHora());
             eventoService.updateEvento(evento);
         }
-        System.out.print("\n-------------------\n");
+
+        if (imprimirLog) System.out.print("\n-------------------\n");
     }
 }
