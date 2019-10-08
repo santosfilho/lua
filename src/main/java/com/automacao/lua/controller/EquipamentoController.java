@@ -1,7 +1,9 @@
 package com.automacao.lua.controller;
 
 import com.automacao.lua.dto.CadastroEquipamentoDTO;
+import com.automacao.lua.dto.CategoriaDTO;
 import com.automacao.lua.dto.EquipamentoDTO;
+import com.automacao.lua.service.CategoriaServices;
 import com.automacao.lua.service.EquipamentoServices;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +24,9 @@ public class EquipamentoController {
 
     @Autowired
     EquipamentoServices equipamentoServices;
+
+    @Autowired
+    CategoriaServices categoriaServices;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Retorna a lista de equipamentos que correspondam aos parâmetros informados.", response = EquipamentoDTO.class, httpMethod = "GET", responseContainer = "List")
@@ -65,5 +70,39 @@ public class EquipamentoController {
             return new ResponseEntity("Equipamento removido com sucesso.", HttpStatus.OK);
 
         return new ResponseEntity("Equipamento não encontrado.", HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/categorias", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Retorna a lista de categorias.", response = CategoriaDTO.class, httpMethod = "GET", responseContainer = "List")
+    public List<CategoriaDTO> getAllCategorias(
+    ) {
+        return categoriaServices.getCategorias();
+    }
+
+    @RequestMapping(value = "/categorias/{idCategoria}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Retorna o equipamento do identificador passado.", response = CategoriaDTO.class, httpMethod = "GET")
+    public CategoriaDTO getCategoria(
+            @ApiParam(name = "idCategoria", value = "Identificador da Categoria") @PathVariable(value = "idCategoria") Long idCategoria
+    ) {
+        return categoriaServices.getCategoria(idCategoria);
+    }
+
+    @RequestMapping(value = "/categorias", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Retorna o equipamento do identificador passado.", response = CategoriaDTO.class, httpMethod = "POST")
+    public CategoriaDTO addCategoria(
+            @ApiParam(name = "Categoria", value = "Categoria") @RequestBody CategoriaDTO categoria
+    ) {
+        return categoriaServices.addCategoria(categoria);
+    }
+
+    @RequestMapping(value = "/categorias/{idCategoria}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Deleta uma categoria", response = String.class, httpMethod = "DELETE")
+    public ResponseEntity removerCategoria(
+            @ApiParam(name = "idCategoria", value = "Identificador do equipamento") @PathVariable(value = "idCategoria") Long idCategoria
+    ) {
+        if (categoriaServices.removerCategoria(idCategoria) == 1)
+            return new ResponseEntity("Categoria removido com sucesso.", HttpStatus.OK);
+
+        return new ResponseEntity("Categoria não encontrado.", HttpStatus.BAD_REQUEST);
     }
 }

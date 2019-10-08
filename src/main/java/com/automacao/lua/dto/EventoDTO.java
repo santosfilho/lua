@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 public class EventoDTO {
     private Long idEvento;
     private Long idEquipamento;
+    private String nomeEquipamento;
+    private String localizacao;
     private Integer status;
 
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT-3")
@@ -74,4 +76,23 @@ public class EventoDTO {
     public void setFimCron(Timestamp fimCron) {
         this.fimCron = fimCron;
     }
+
+    @ApiModelProperty(name = "idEquipamento", value = "Nome do equipamento", dataType = "java.lang.String")
+    public String getNomeEquipamento() {
+        return nomeEquipamento;
+    }
+
+    public void setNomeEquipamento(String nome) {
+        this.nomeEquipamento = nome;
+    }
+
+    @ApiModelProperty(name = "idEquipamento", value = "Localizacao do equipamento", dataType = "java.lang.String")
+    public String getLocalizacao() {
+        return localizacao;
+    }
+
+    public void setLocalizacao(String localizacao) {
+        this.localizacao = localizacao;
+    }
 }
+

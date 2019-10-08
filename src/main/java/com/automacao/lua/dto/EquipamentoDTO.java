@@ -15,15 +15,9 @@ import java.util.Date;
 @ApiModel(value = "EquipamentoDTO", description = "Representa um equipamento elétrico")
 public class EquipamentoDTO extends CadastroEquipamentoDTO{
 
-
-
     @JsonProperty("data_cadastro")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date dataCadastro;
-
-
-
-
 
     @ApiModelProperty(name = "data_cadastro", value = "Data de cadastro do equipamento", dataType = "java.lang.Date")
     public Date getDataCadastro() {

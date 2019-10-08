@@ -22,7 +22,6 @@ public class EventoService {
         return null;
     }
 
-
     public List<EventoDTO> getEventos(Long idEquipamento, Integer status, Timestamp hora, String cron, Timestamp fimCron){
         return eventoRepository.getEventos(null, idEquipamento, status, hora, cron, fimCron);
     }
