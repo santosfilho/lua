@@ -30,7 +30,11 @@ public class EventoRepository {
      * @return
      */
     private Object findEventos(Long idEvento, Long idEquipamento, Integer status, Timestamp hora, String cron, Timestamp fimCron) {
-        StringBuilder sql = new StringBuilder(" SELECT id_evento, id_equipamento, status, hora, cron, fim_cron FROM evento WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder(" SELECT  e.*, eq.nome as nome_equipamento, l.localizacao " +
+                " FROM evento e " +
+                " JOIN equipamento eq ON e.id_equipamento = eq.id_equipamento " +
+                " JOIN local l ON eq.id_local = l.id_local " +
+                " WHERE 1=1 ");
         List<Object> params = new ArrayList<>();
 
         if (idEvento != null) {
