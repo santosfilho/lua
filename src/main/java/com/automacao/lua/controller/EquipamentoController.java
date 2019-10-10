@@ -89,10 +89,15 @@ public class EquipamentoController {
 
     @RequestMapping(value = "/categorias", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Retorna o equipamento do identificador passado.", response = CategoriaDTO.class, httpMethod = "POST")
-    public CategoriaDTO addCategoria(
+    public ResponseEntity addCategoria(
             @ApiParam(name = "Categoria", value = "Categoria") @RequestBody CategoriaDTO categoria
     ) {
-        return categoriaServices.addCategoria(categoria);
+        CategoriaDTO categ = categoriaServices.addCategoria(categoria);
+        if (categ != null)
+            return  new ResponseEntity(categ, HttpStatus.OK);
+
+        return new ResponseEntity("Verifique o nome informado", HttpStatus.BAD_REQUEST);
+
     }
 
     @RequestMapping(value = "/categorias/{idCategoria}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -29,6 +29,9 @@ public class CategoriaRepository {
     public CategoriaDTO addCategoria(CategoriaDTO categoria) {
         String sql = "INSERT INTO public.categoria (id_categoria, nome) VALUES (DEFAULT, ? ) ";
 
+        if(categoria.getNome() == null || categoria.getNome().isEmpty())
+            return null;
+
         int sucess = jdbcTemplate.update(sql, categoria.getNome());
 
         if (sucess == 1)
@@ -39,7 +42,7 @@ public class CategoriaRepository {
     }
 
     public int removerCategoria(Long id_categoria) {
-        String sql = "DELETE FROM local WHERE id_categoria = ? ";
+        String sql = "DELETE FROM categoria WHERE id_categoria = ? ";
 
         int sucess = jdbcTemplate.update(sql, new Object[]{id_categoria});
 
