@@ -22,7 +22,7 @@ public class LuaApplication {
 	@Bean
 	public Docket swagger() {
 
-		//http://localhost:8080/swagger-ui.html
+		//http://localhost:8079/swagger-ui.html
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.automacao.lua"))

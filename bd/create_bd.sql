@@ -62,7 +62,7 @@ create table equipamento
 		constraint equipamento_pkey
 			primary key,
 	nome varchar(100) not null,
-	descricao varchar(200) not null,
+	descricao varchar(200),
 	status integer default 0 not null,
 	marca varchar(50),
 	modelo varchar(50),
