@@ -31,7 +31,8 @@ public class EquipamentoServices {
             try {
                 return equipamentoRepository.cadastrarEquipamento(equipamento);
             } catch (Exception e) {
-                System.out.println("Erro ao adicionar equipamento");
+                //System.out.println("Erro ao adicionar equipamento");
+                e.printStackTrace();
                 return null;
             }
         }

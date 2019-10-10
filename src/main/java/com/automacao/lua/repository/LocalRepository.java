@@ -77,7 +77,12 @@ public class LocalRepository {
     public int removerLocal(Long idLocal) {
         String sql = "DELETE FROM local WHERE id_local = ? ";
 
-        int sucess = jdbcTemplate.update(sql, new Object[]{idLocal});
+        int sucess = 0;
+        try{
+            sucess = jdbcTemplate.update(sql, new Object[]{idLocal});
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         return sucess;
     }
