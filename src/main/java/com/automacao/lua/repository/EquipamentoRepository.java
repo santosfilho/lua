@@ -95,12 +95,12 @@ public class EquipamentoRepository {
         String sql = "UPDATE equipamento SET id_equipamento = ? ";
         params.add(equipamento.getIdEquipamento());
 
-        if (equipamento.getNome() != null) {
+        if (equipamento.getNome() != null && !equipamento.getNome().isEmpty()) {
             sql += ", nome = ? ";
             params.add(equipamento.getNome());
         }
 
-        if (equipamento.getDescricao() != null) {
+        if (equipamento.getDescricao() != null && !equipamento.getDescricao().isEmpty()) {
             sql += ", descricao = ? ";
             params.add(equipamento.getDescricao());
         }
@@ -125,12 +125,12 @@ public class EquipamentoRepository {
             params.add(equipamento.getTombamento());
         }
 
-        if (equipamento.getMarca() != null) {
+        if (equipamento.getMarca() != null && !equipamento.getMarca().isEmpty()) {
             sql += ", marca  = ? ";
             params.add(equipamento.getMarca());
         }
 
-        if (equipamento.getModelo() != null) {
+        if (equipamento.getModelo() != null && !equipamento.getModelo().isEmpty()) {
             sql += ", modelo  = ? ";
             params.add(equipamento.getModelo());
         }
