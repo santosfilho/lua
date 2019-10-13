@@ -1,5 +1,7 @@
 package com.automacao.lua.components;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.automacao.lua.dto.EventoDTO;
 import com.automacao.lua.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +31,25 @@ public class ScheduledEventos {
     @Autowired
     private EventoService eventoService;
 
+    private static final Logger logger = LoggerFactory.getLogger(ScheduledEventos.class);
+    
     //Delay em milisegundos, 1 segundo são 1000 milisegundos.
     @Scheduled(fixedDelay = 5000)
     public void executar() {
         //TODO: Deve varrer todos eventos que o fimCron é menor que a data atual e atualizar o a hora do próximo evento
         // a partir do valor do cron
 
-        boolean imprimirCron = false;
+
 
         Timestamp horaAtual = new Timestamp(System.currentTimeMillis());
 
         List<EventoDTO> eventos = eventoService.getEventos(null, null, horaAtual, null, horaAtual);
+
+        boolean imprimirCron = true && (eventos.size() > 0);
+
         //List<EventoDTO> eventos = eventoService.getEventos(null, null, null, null, null);
         if (imprimirCron) {
-            System.out.println("São " + horaAtual);
-            System.out.print("e há " + eventos.size() + " eventos à atualizar");
+            logger.info("e há " + eventos.size() + " eventos à atualizar");
         }
 
         /** -> http://www.cronmaker.com/help/rest-api-help.html APIIII!!
@@ -65,7 +71,7 @@ public class ScheduledEventos {
         //final CronSequenceGenerator generator = new CronSequenceGenerator(cronExpression);
         //final Date nextExecutionDate = generator.next(new Date());
         for (EventoDTO evento : eventos) {
-            if (imprimirCron) System.out.print("\nidEvento: " + evento.getIdEvento() + " | hora antiga: " + evento.getHora());
+            if (imprimirCron) logger.info("idEvento: " + evento.getIdEvento() + " | hora antiga: " + evento.getHora());
 
             if (evento.getCron() != null && ! evento.getCron().isEmpty()) {
                 try{
@@ -73,10 +79,10 @@ public class ScheduledEventos {
                     evento.setHora(new Timestamp(gerador.next(new Date()).getTime()));
 
                     if (imprimirCron){
-                        System.out.print(" -> hora nova: " + evento.getHora());
+                        logger.info(" -> hora nova: " + evento.getHora());
                     }
 
-                    eventoService.updateEvento(evento);
+                    eventoService.executarEvento(evento);
 
                 } catch (NumberFormatException ex) {
                     ex.printStackTrace();
@@ -84,6 +90,6 @@ public class ScheduledEventos {
             }
         }
 
-        if (imprimirCron) System.out.print("\n-------------------\n");
+        if (imprimirCron) logger.info("\n-------------------\n");
     }
 }

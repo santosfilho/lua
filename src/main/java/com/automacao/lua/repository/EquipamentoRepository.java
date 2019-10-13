@@ -26,7 +26,11 @@ public class EquipamentoRepository {
      * @return
      */
     public List<EquipamentoDTO> getEquipamentos(Long idEquipamento, Long idLocal, Long tombamento, String nome, String marca, Integer status) {
-        String sql = "SELECT * FROM equipamento WHERE 1=1 ";
+        String sql = " SELECT equipamento.*, local.localizacao, categoria.nome as categoria FROM equipamento equipamento"
+            + " JOIN local local on (local.id_local = equipamento.id_local)"
+            + " JOIN categoria categoria on (categoria.id_categoria = equipamento.id_categoria)"
+            + " WHERE 1=1 ";
+
         List<Object> params = new ArrayList<>();
 
         if (idEquipamento != null) {
@@ -59,6 +63,8 @@ public class EquipamentoRepository {
             params.add(status);
         }
 
+        sql += " ORDER BY id_equipamento ASC ";
+
         return jdbcTemplate.query(sql, params.toArray(), new BeanPropertyRowMapper(EquipamentoDTO.class));
     }
 
@@ -68,6 +74,20 @@ public class EquipamentoRepository {
         if (sucess == 1)
             return ultimoEquipamento();
         return null;
+    }
+
+    public int mudarStatus(Long idEquipamento, int novoStatus) {
+        int sucesso = 0;
+        if (idEquipamento != null) {
+            try {
+                sucesso = jdbcTemplate.update("UPDATE equipamento SET status = ? WHERE equipamento.id_equipamento = ? ",
+                        new Object[]{novoStatus, idEquipamento});
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return sucesso;
     }
 
     public EquipamentoDTO atualizarEquipamento(CadastroEquipamentoDTO equipamento) {
@@ -99,7 +119,7 @@ public class EquipamentoRepository {
         params.add(equipamento.getIdEquipamento());
 
         if (params.size() > 2 && jdbcTemplate.update(sql, params.toArray()) == 1)
-                return ultimoEquipamento();
+            return ultimoEquipamento();
 
         return null;
     }

@@ -1,7 +1,10 @@
 package com.automacao.lua.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class CategoriaDTO {
     private Long idCategoria;
+
     private String nome;
 
     public Long getIdCategoria() {
@@ -12,6 +15,7 @@ public class CategoriaDTO {
         this.idCategoria = idCategoria;
     }
 
+    @ApiModelProperty(name = "nome", value = "Nome da Categoria", dataType = "java.lang.String", required = true)
     public String getNome() {
         return nome;
     }

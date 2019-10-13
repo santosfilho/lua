@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-
+/**
+ * @author José dos Santos (josecnrn@gmail.com)
+ * @since 22/07/19.
+ */
 @ApiModel(value = "CadastroEquipamentoDTO", description = "Representa um equipamento elétrico")
 public class CadastroEquipamentoDTO {
     private String nome;

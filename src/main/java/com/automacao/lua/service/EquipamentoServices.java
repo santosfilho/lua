@@ -16,6 +16,15 @@ public class EquipamentoServices {
     @Autowired
     EquipamentoRepository equipamentoRepository;
 
+    @Autowired
+    CategoriaServices categoriaServices;
+
+    public int mudarStatus(Long idEquipamento, int novoStatus){
+        if (novoStatus >= -1 && novoStatus <= 1)
+            return equipamentoRepository.mudarStatus(idEquipamento, novoStatus);
+        return 0;
+    }
+
     public EquipamentoDTO getEquipamento(Long idEquipamento) {
         if (equipamentoRepository.getEquipamentos(idEquipamento, null, null, null, null, null).size() > 0)
             return equipamentoRepository.getEquipamentos(idEquipamento, null, null, null, null, null).get(0);

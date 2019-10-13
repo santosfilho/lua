@@ -110,4 +110,18 @@ public class EquipamentoController {
 
         return new ResponseEntity("Categoria não encontrado.", HttpStatus.BAD_REQUEST);
     }
+
+    @PutMapping(value = "/mudar-status", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Muda o status do equipamento", response = String.class, httpMethod = "PUT")
+    public ResponseEntity mudarStatus(
+            @ApiParam(name = "idEquipamento", value = "ID do equipamento") @RequestParam(name = "idEquipamento") Long idEquipamento,
+            @ApiParam(name = "status", value = "Novo status do equipamento") @RequestParam(name = "status") int status
+    ) {
+        if (equipamentoServices.mudarStatus(idEquipamento, status) == 1){
+            return new ResponseEntity("Status atualizado. ", HttpStatus.OK);
+        } else {
+            return new ResponseEntity("Erro ao atualizar status. ", HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }

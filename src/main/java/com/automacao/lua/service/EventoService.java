@@ -16,6 +16,9 @@ public class EventoService {
     @Autowired
     private EventoRepository eventoRepository;
 
+    @Autowired
+    private EquipamentoServices equipamentoServices;
+
     public EventoDTO getEvento(Long idEvento) {
         if (eventoRepository.getEventos(idEvento, null, null, null, null,null).size() > 0)
             return eventoRepository.getEventos(idEvento, null, null, null, null,null).get(0);
@@ -30,7 +33,20 @@ public class EventoService {
         return eventoRepository.addEvento(evento);
     }
 
-    public int updateEvento(EventoDTO evento){
+    public int executarEvento(EventoDTO evento){
+        int sucesso = 0;
+        if(evento != null && evento.getStatus() != null){
+            sucesso = equipamentoServices.mudarStatus(evento.getIdEquipamento(), evento.getStatus().intValue());
+
+            // Se o equipamento está com o novo status, atualize o evento
+            if (sucesso == 1){
+                sucesso = updateEvento(evento);
+            }
+        }
+        return sucesso;
+    }
+
+    private int updateEvento(EventoDTO evento){
         return eventoRepository.updateEvento(evento);
     }
 
