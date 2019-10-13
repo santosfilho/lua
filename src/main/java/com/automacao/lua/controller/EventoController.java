@@ -44,6 +44,18 @@ public class EventoController {
         return eventoService.getEvento(idEvento);
     }
 
+    @PutMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Atualiza e retorna o evento atualizado. ", response = EventoDTO.class, httpMethod = "PUT")
+    public ResponseEntity atualizarEvento(
+            @ApiParam(name = "evento", value = "Informações do evento") @RequestBody EventoDTO evento
+    ){
+        EventoDTO novoEvento = eventoService.atualizarInfoEventos(evento);
+        if (novoEvento != null)
+            return ResponseEntity.status(HttpStatus.OK).body(novoEvento);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID do evento invalido. ");
+    }
+
     @RequestMapping(method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Cadastra um evento.", response = EventoDTO.class, httpMethod = "POST")
     public ResponseEntity addEvento(

@@ -70,6 +70,39 @@ public class EventoRepository {
         return jdbcTemplate.query(sql.toString(), params.toArray(), new BeanPropertyRowMapper(EventoDTO.class));
     }
 
+    public EventoDTO atualizarInfoEventos(EventoDTO evento){
+        List<Object> params = new ArrayList<>();
+        String sql = " UPDATE evento SET id_evento = ? ";
+        params.add(evento.getIdEvento());
+
+        if (evento.getStatus() != null && evento.getStatus() >= -1 && evento.getStatus() <= 1){
+            sql+=", status = ? ";
+            params.add(evento.getStatus());
+        }
+
+        if (evento.getIdEquipamento() != null){
+            sql+=", id_equipamento = ? ";
+            params.add(evento.getIdEquipamento());
+        }
+
+        if (evento.getFimCron() != null){
+            sql+=", fim_cron = ? ";
+            params.add(evento.getFimCron());
+        }
+
+        if (evento.getCron() != null){
+            sql+=", cron = ? ";
+            params.add(evento.getCron());
+        }
+
+        sql += " WHERE id_evento = ? ";
+        params.add(evento.getIdEvento());
+        if(jdbcTemplate.update(sql, params.toArray()) == 1){
+            return ((List<EventoDTO>) findEventos(evento.getIdEvento(), null, null, null, null, null)).get(0);
+        }
+
+        return null;
+    }
 
     /**
      * @param evento
@@ -77,7 +110,6 @@ public class EventoRepository {
      * @throws Exception
      */
     public EventoDTO addEvento(EventoDTO evento) throws Exception {
-
         //INSERT INTO "public"."evento" ("id_evento", "id_equipamento", "status", "hora", "cron", "fim_cron") VALUES (7, 2, 1, '2019-08-01 17:51:58.343000', '0 0 1 * /* /*', '2019-08-01 17:52:10.811000')
         //StringBuilder sql1 = new StringBuilder("INSERT INTO public.evento VALUES (DEFAULT, ?, ?, ?, ?, ?) ");
         StringBuilder sql1 = new StringBuilder(" INSERT INTO public.evento (id_evento ");
