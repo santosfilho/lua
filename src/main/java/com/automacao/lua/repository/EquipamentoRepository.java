@@ -115,11 +115,36 @@ public class EquipamentoRepository {
             params.add(equipamento.getIdLocal());
         }
 
+        if (equipamento.getIdCategoria() != null && equipamento.getIdCategoria() > 0) {
+            sql += ", id_categoria  = ? ";
+            params.add(equipamento.getIdCategoria());
+        }
+
+        if (equipamento.getTombamento() != null && equipamento.getTombamento() > 0) {
+            sql += ", tombamento  = ? ";
+            params.add(equipamento.getTombamento());
+        }
+
+        if (equipamento.getMarca() != null) {
+            sql += ", marca  = ? ";
+            params.add(equipamento.getMarca());
+        }
+
+        if (equipamento.getModelo() != null) {
+            sql += ", modelo  = ? ";
+            params.add(equipamento.getModelo());
+        }
+
+        if (equipamento.getPotencia() != null && equipamento.getPotencia() > 0) {
+            sql += ", potencia  = ? ";
+            params.add(equipamento.getPotencia());
+        }
+
         sql += " WHERE equipamento.id_equipamento = ? ";
         params.add(equipamento.getIdEquipamento());
 
         if (params.size() > 2 && jdbcTemplate.update(sql, params.toArray()) == 1)
-            return ultimoEquipamento();
+            return getEquipamentos(equipamento.getIdEquipamento(), null, null, null, null, null).get(0);
 
         return null;
     }

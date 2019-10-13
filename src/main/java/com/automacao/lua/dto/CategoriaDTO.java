@@ -7,6 +7,7 @@ public class CategoriaDTO {
 
     private String nome;
 
+    @ApiModelProperty(name = "idCategoria", value = "Nome da Categoria", dataType = "java.lang.Long", required = true)
     public Long getIdCategoria() {
         return idCategoria;
     }

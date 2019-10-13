@@ -25,9 +25,6 @@ public class EquipamentoController {
     @Autowired
     EquipamentoServices equipamentoServices;
 
-    @Autowired
-    CategoriaServices categoriaServices;
-
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Retorna a lista de equipamentos que correspondam aos parâmetros informados.", response = EquipamentoDTO.class, httpMethod = "GET", responseContainer = "List")
     public List<EquipamentoDTO> getAllEquipamentos(
@@ -48,6 +45,19 @@ public class EquipamentoController {
         return equipamentoServices.getEquipamento(idEquipamento);
     }
 
+    @PutMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Atualiza um equipamento.", response = EquipamentoDTO.class, httpMethod = "PUT")
+    public ResponseEntity atuaizarEquipamento(
+            @ApiParam(name = "Equipamento", value = "Equipamento") @RequestBody CadastroEquipamentoDTO equipamento
+    ){
+        CadastroEquipamentoDTO novoEquipamento = equipamentoServices.atualizarEquipamento(equipamento);
+
+        if (novoEquipamento != null)
+            return ResponseEntity.status(HttpStatus.OK).body(novoEquipamento);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao atualizar equipamento, verifique idLocal e idCategoria.");
+    }
+
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Cadastra um equipamento.", response = EquipamentoDTO.class, httpMethod = "POST")
     public ResponseEntity cadastrarEquipamento(
@@ -64,51 +74,12 @@ public class EquipamentoController {
     @RequestMapping(value = "/{idEquipamento}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Deleta um equipamento", response = String.class, httpMethod = "DELETE")
     public ResponseEntity removerEquipamento(
-            @ApiParam(name = "idEquipamento", value = "Identificador do equipamento") @PathVariable(value = "idEquipamento") Long idEquipamento
+           @ApiParam(name = "idEquipamento", value = "Identificador do equipamento") @PathVariable(value = "idEquipamento") Long idEquipamento
     ) {
         if (equipamentoServices.removerEquipamento(idEquipamento) == 1)
             return new ResponseEntity("Equipamento removido com sucesso.", HttpStatus.OK);
 
         return new ResponseEntity("Equipamento não encontrado.", HttpStatus.BAD_REQUEST);
-    }
-
-    @RequestMapping(value = "/categorias", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Retorna a lista de categorias.", response = CategoriaDTO.class, httpMethod = "GET", responseContainer = "List")
-    public List<CategoriaDTO> getAllCategorias(
-    ) {
-        return categoriaServices.getCategorias();
-    }
-
-    @RequestMapping(value = "/categorias/{idCategoria}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Retorna o equipamento do identificador passado.", response = CategoriaDTO.class, httpMethod = "GET")
-    public CategoriaDTO getCategoria(
-            @ApiParam(name = "idCategoria", value = "Identificador da Categoria") @PathVariable(value = "idCategoria") Long idCategoria
-    ) {
-        return categoriaServices.getCategoria(idCategoria);
-    }
-
-    @RequestMapping(value = "/categorias", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Retorna o equipamento do identificador passado.", response = CategoriaDTO.class, httpMethod = "POST")
-    public ResponseEntity addCategoria(
-            @ApiParam(name = "Categoria", value = "Categoria") @RequestBody CategoriaDTO categoria
-    ) {
-        CategoriaDTO categ = categoriaServices.addCategoria(categoria);
-        if (categ != null)
-            return  new ResponseEntity(categ, HttpStatus.OK);
-
-        return new ResponseEntity("Verifique o nome informado", HttpStatus.BAD_REQUEST);
-
-    }
-
-    @RequestMapping(value = "/categorias/{idCategoria}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Deleta uma categoria", response = String.class, httpMethod = "DELETE")
-    public ResponseEntity removerCategoria(
-            @ApiParam(name = "idCategoria", value = "Identificador do equipamento") @PathVariable(value = "idCategoria") Long idCategoria
-    ) {
-        if (categoriaServices.removerCategoria(idCategoria) == 1)
-            return new ResponseEntity("Categoria removido com sucesso.", HttpStatus.OK);
-
-        return new ResponseEntity("Categoria não encontrado.", HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/mudar-status", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

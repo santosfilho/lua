@@ -39,13 +39,11 @@ public class ScheduledEventos {
         //TODO: Deve varrer todos eventos que o fimCron é menor que a data atual e atualizar o a hora do próximo evento
         // a partir do valor do cron
 
-
-
         Timestamp horaAtual = new Timestamp(System.currentTimeMillis());
 
         List<EventoDTO> eventos = eventoService.getEventos(null, null, horaAtual, null, horaAtual);
 
-        boolean imprimirCron = true && (eventos.size() > 0);
+        boolean imprimirCron = false && (eventos.size() > 0);
 
         //List<EventoDTO> eventos = eventoService.getEventos(null, null, null, null, null);
         if (imprimirCron) {

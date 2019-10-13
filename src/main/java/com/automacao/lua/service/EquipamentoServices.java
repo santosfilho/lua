@@ -26,8 +26,9 @@ public class EquipamentoServices {
     }
 
     public EquipamentoDTO getEquipamento(Long idEquipamento) {
-        if (equipamentoRepository.getEquipamentos(idEquipamento, null, null, null, null, null).size() > 0)
-            return equipamentoRepository.getEquipamentos(idEquipamento, null, null, null, null, null).get(0);
+        List<EquipamentoDTO> equipamento = equipamentoRepository.getEquipamentos(idEquipamento, null, null, null, null, null);
+        if (equipamento.size() > 0)
+            return equipamento.get(0);
         return null;
     }
 
@@ -51,5 +52,9 @@ public class EquipamentoServices {
 
     public int removerEquipamento(Long idEquipamento){
         return equipamentoRepository.removerEquipamento(idEquipamento);
+    }
+
+    public EquipamentoDTO atualizarEquipamento(CadastroEquipamentoDTO equipamento){
+        return equipamentoRepository.atualizarEquipamento(equipamento);
     }
 }
