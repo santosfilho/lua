@@ -1,6 +1,7 @@
 package com.automacao.lua.repository;
 
 import com.automacao.lua.dto.LocalDTO;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -66,6 +67,41 @@ public class LocalRepository {
 
         if (sucess == 1)
             return ((List<LocalDTO>) jdbcTemplate.query("SELECT id_local, localizacao, setor, capacidade, descricao FROM local ORDER BY id_local DESC LIMIT 1", new Object[]{}, new BeanPropertyRowMapper(LocalDTO.class))).get(0);
+
+        return null;
+    }
+
+    public LocalDTO atualizarLocal(LocalDTO local) {
+
+        List<Object> params = new ArrayList<>();
+        String sql = " UPDATE local SET id_local = ? ";
+        params.add(local.getIdLocal());
+
+        if (local.getLocalizacao() != null && ! local.getLocalizacao().isEmpty()){
+            sql+=", localizacao = ? ";
+            params.add(local.getLocalizacao());
+        }
+
+        if (local.getSetor() != null && ! local.getSetor().isEmpty()){
+            sql+=", setor = ? ";
+            params.add(local.getSetor());
+        }
+
+        if (local.getCapacidade() != null){
+            sql+=", capacidade = ? ";
+            params.add(local.getCapacidade());
+        }
+
+        if (local.getDescricao() != null && ! local.getDescricao().isEmpty()){
+            sql+=", descricao = ? ";
+            params.add(local.getDescricao());
+        }
+
+        sql += " WHERE id_local = ? ";
+        params.add(local.getIdLocal());
+        if(jdbcTemplate.update(sql, params.toArray()) == 1){
+            return (getLocais(local.getIdLocal(), null, null, null, null)).get(0);
+        }
 
         return null;
     }

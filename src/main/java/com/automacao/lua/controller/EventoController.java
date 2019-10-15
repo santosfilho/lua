@@ -49,9 +49,9 @@ public class EventoController {
     public ResponseEntity atualizarEvento(
             @ApiParam(name = "evento", value = "Informações do evento") @RequestBody EventoDTO evento
     ){
-        EventoDTO novoEvento = eventoService.atualizarInfoEventos(evento);
-        if (novoEvento != null)
-            return ResponseEntity.status(HttpStatus.OK).body(novoEvento);
+        EventoDTO eventoAtualizado = eventoService.atualizarInfoEventos(evento);
+        if (eventoAtualizado != null)
+            return ResponseEntity.status(HttpStatus.OK).body(eventoAtualizado);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID do evento invalido. ");
     }

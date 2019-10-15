@@ -41,6 +41,18 @@ public class LocalController {
         return localServices.getLocal(idLocal);
     }
 
+    @PutMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Retorna o local Atualizado", response = LocalDTO.class, httpMethod = "PUT")
+    public ResponseEntity atualizarLocal(
+        @ApiParam(name = "local", value = "Json do Local a ser atualizado") @RequestBody LocalDTO local
+    ){
+        LocalDTO localAtualizado = localServices.atualizarLocal(local);
+        if ( localAtualizado != null)
+            return ResponseEntity.status(HttpStatus.OK).body(localAtualizado);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID do local invalido. ");
+    }
+
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Cadastra um local e o retorna em caso de sucesso.", response = LocalDTO.class, httpMethod = "POST")
     public ResponseEntity addLocal(

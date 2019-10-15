@@ -28,6 +28,10 @@ public class LocalServices {
         return localRepository.addLocal(local);
     }
 
+    public LocalDTO atualizarLocal(LocalDTO local){
+        return localRepository.atualizarLocal(local);
+    }
+
     public int removerLocal(Long idLocal){
         return localRepository.removerLocal(idLocal);
     }
