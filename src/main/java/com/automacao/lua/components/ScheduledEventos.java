@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class ScheduledEventos {
     @Autowired
     private EventoService eventoService;
 
+    @Autowired
+    private JavaMailApp javaMailApp;
+
     private static final Logger logger = LoggerFactory.getLogger(ScheduledEventos.class);
     
     //Delay em milisegundos, 1 segundo são 1000 milisegundos.
@@ -38,6 +42,8 @@ public class ScheduledEventos {
     public void executar() {
         //TODO: Deve varrer todos eventos que o fimCron é menor que a data atual e atualizar o a hora do próximo evento
         // a partir do valor do cron
+
+        String msmEmail="Email Funcionou.";
 
         Timestamp horaAtual = new Timestamp(System.currentTimeMillis());
 
@@ -89,5 +95,10 @@ public class ScheduledEventos {
         }
 
         if (imprimirCron) logger.info("\n-------------------\n");
+
+        List<String> emails = new ArrayList<>();
+        emails.add("josecnrn@gmail.com");
+        emails.add("josefilhocnrn@gmail.com");
+        //javaMailApp.sendEmail(emails, "Teste real","Alguma mensagem");
     }
 }
