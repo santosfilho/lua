@@ -1,6 +1,3 @@
-
-
-
 -- CRAIAÇÃO Database: lua
 ---------------------------------------------------------------------------
 -- DROP DATABASE lua;
@@ -91,7 +88,6 @@ comment on column equipamento.data_cadastro is 'Data do cadastro do equimento';
 comment on column equipamento.potencia is 'Potência do equipamento em Watts';
 comment on column equipamento.id_categoria is 'Identificador da categoria do equipamento';
 
-
 -- TABELA DE EVENTOS
 ---------------------------------------------------------------------------
 create table evento
@@ -104,9 +100,38 @@ create table evento
 			references equipamento,
 	status integer not null,
 	hora timestamp(6) with time zone default now(),
-	cron varchar(23),
+	cron varchar(45),
 	fim_cron timestamp(6) with time zone
 );
+
+comment on column evento.hora is 'Hora da ultima atuazação';
+
+
+-- TABELA DE USUÁRIOS
+---------------------------------------------------------------------------
+
+create sequence usuario_id_usuario_seq
+    as integer;
+
+alter sequence usuario_id_usuario_seq owner to postgres;
+
+create table usuarios
+(
+    id_usuario integer default nextval('usuario_id_usuario_seq'::regclass) not null
+        constraint usuarios_pk
+            primary key,
+    login varchar(20) not null,
+    senha varchar(50) not null,
+    nome varchar,
+    permissoes varchar
+);
+comment on column usuarios.login is 'Login do usuario, deve ser unico.';
+
+comment on column usuarios.permissoes is 'Permissoes do usuario.';
+
+-- auto-generated definition
+create unique index usuarios_login_uindex
+    on usuarios (login);
 
 -- FUNÇÕES
 ---------------------------------------------------------------------------
