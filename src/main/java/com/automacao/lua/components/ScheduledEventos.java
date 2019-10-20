@@ -49,7 +49,7 @@ public class ScheduledEventos {
 
         List<EventoDTO> eventos = eventoService.getEventos(null, null, horaAtual, null, horaAtual);
 
-        boolean imprimirCron = false && (eventos.size() > 0);
+        boolean imprimirCron = true && (eventos.size() > 0);
 
         //List<EventoDTO> eventos = eventoService.getEventos(null, null, null, null, null);
         if (imprimirCron) {
@@ -87,6 +87,11 @@ public class ScheduledEventos {
                     }
 
                     eventoService.executarEvento(evento);
+
+                    //Remove o evento caso seja sua ultima execução
+                    if (evento.getFimCron() != null && (evento.getHora().getTime() > evento.getFimCron().getTime())){
+                        eventoService.removerEvento(evento.getIdEvento());
+                    }
 
                 } catch (NumberFormatException ex) {
                     ex.printStackTrace();
