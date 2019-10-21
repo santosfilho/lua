@@ -110,9 +110,7 @@ comment on column evento.hora is 'Hora da ultima atuazação';
 -- TABELA DE USUÁRIOS
 ---------------------------------------------------------------------------
 
-create sequence usuario_id_usuario_seq
-    as integer;
-
+create sequence usuario_id_usuario_seq as integer;
 alter sequence usuario_id_usuario_seq owner to postgres;
 
 create table usuarios
@@ -123,15 +121,17 @@ create table usuarios
     login varchar(20) not null,
     senha varchar(50) not null,
     nome varchar,
-    permissoes varchar
+    permissoes varchar,
+    email varchar
 );
-comment on column usuarios.login is 'Login do usuario, deve ser unico.';
 
+comment on column usuarios.login is 'Login do usuario, deve ser unico.';
 comment on column usuarios.permissoes is 'Permissoes do usuario.';
 
--- auto-generated definition
-create unique index usuarios_login_uindex
-    on usuarios (login);
+alter table usuarios owner to postgres;
+
+create unique index usuarios_login_uindex on usuarios (login);
+create unique index usuarios_email_uindex on usuarios (email);
 
 -- FUNÇÕES
 ---------------------------------------------------------------------------

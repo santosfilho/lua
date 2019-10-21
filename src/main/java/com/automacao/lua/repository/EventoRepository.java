@@ -4,10 +4,12 @@ import com.automacao.lua.dto.EventoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -75,6 +77,11 @@ public class EventoRepository {
         String sql = " UPDATE evento SET id_evento = ? ";
         params.add(evento.getIdEvento());
 
+        CronSequenceGenerator geradorCron = new CronSequenceGenerator(evento.getCron());
+        evento.setHora(new Timestamp(geradorCron.next(new Date()).getTime()));
+        sql+=", hora = ? ";
+        params.add(evento.getHora());
+
         if (evento.getStatus() != null && evento.getStatus() >= -1 && evento.getStatus() <= 1){
             sql+=", status = ? ";
             params.add(evento.getStatus());
@@ -128,11 +135,11 @@ public class EventoRepository {
             params.add(evento.getStatus());
         }
 
-        if (evento.getHora() != null) {
-            sql1.append(", hora");
-            sql2.append(", ? ");
-            params.add(evento.getHora());
-        }
+        CronSequenceGenerator geradorCron = new CronSequenceGenerator(evento.getCron());
+        evento.setHora(new Timestamp(geradorCron.next(new Date()).getTime()));
+        sql1.append(", hora");
+        sql2.append(", ? ");
+        params.add(evento.getHora());
 
         if (evento.getCron() != null) {
             sql1.append(", cron");

@@ -43,8 +43,6 @@ public class ScheduledEventos {
         //TODO: Deve varrer todos eventos que o fimCron é menor que a data atual e atualizar o a hora do próximo evento
         // a partir do valor do cron
 
-        String msmEmail="Email Funcionou.";
-
         Timestamp horaAtual = new Timestamp(System.currentTimeMillis());
 
         List<EventoDTO> eventos = eventoService.getEventos(null, null, horaAtual, null, horaAtual);
@@ -80,6 +78,7 @@ public class ScheduledEventos {
             if (evento.getCron() != null && ! evento.getCron().isEmpty()) {
                 try{
                     CronSequenceGenerator gerador = new CronSequenceGenerator(evento.getCron());
+
                     evento.setHora(new Timestamp(gerador.next(new Date()).getTime()));
 
                     if (imprimirCron){
@@ -88,8 +87,21 @@ public class ScheduledEventos {
 
                     eventoService.executarEvento(evento);
 
-                    //Remove o evento caso seja sua ultima execução
-                    if (evento.getFimCron() != null && (evento.getHora().getTime() > evento.getFimCron().getTime())){
+                    // Verifica se aquela é penultima execução
+                    if (evento.getFimCron() != null && gerador.next(evento.getHora()).getTime() > evento.getFimCron().getTime()){
+                        List<String> emails = new ArrayList<>();
+                        emails.add("josecnrn@gmail.com");
+
+                        StringBuilder mensagem = new StringBuilder();
+                        mensagem.append("Equipamento: " + evento.getNomeEquipamento());
+                        mensagem.append(".\nVai " + (evento.getStatus() == 1 ? "LIGAR" : "DESLIGAR"));
+                        mensagem.append(" pela ultima vez em " + evento.getHora().toString());
+                        mensagem.append("\n Caso queira que o evento não pare de ocorrer atualize o tempo de fim do evento");
+
+                        javaMailApp.sendEmail(emails, evento.getNomeEquipamento() + ": Evento chegando ao fim.", mensagem.toString());
+
+                    } else if(evento.getFimCron() != null && (evento.getHora().getTime() > evento.getFimCron().getTime())){
+                        //Remove o evento caso seja sua ultima execução
                         eventoService.removerEvento(evento.getIdEvento());
                     }
 
@@ -100,10 +112,5 @@ public class ScheduledEventos {
         }
 
         if (imprimirCron) logger.info("\n-------------------\n");
-
-        List<String> emails = new ArrayList<>();
-        emails.add("josecnrn@gmail.com");
-        emails.add("josefilhocnrn@gmail.com");
-        //javaMailApp.sendEmail(emails, "Teste real","Alguma mensagem");
     }
 }
