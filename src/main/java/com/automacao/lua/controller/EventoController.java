@@ -25,7 +25,7 @@ public class EventoController {
     private EventoService eventoService;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Cadastra um equipamento.", response = EventoDTO.class, httpMethod = "GET")
+    @ApiOperation(value = "Retorna lista de eventos.", response = EventoDTO.class, httpMethod = "GET")
     public List<EventoDTO> buscarEventos(
             @ApiParam(name = "idEquipamento", value = "Identificador do equipamento") @RequestParam(value = "idEquipamento", required = false) Long idEquipamento,
             @ApiParam(name = "status", value = "Status do equipamento (-1: Defeituoso, 0: Desligado, 1: Ligado) ") @RequestParam(value = "status", required = false) Integer status,

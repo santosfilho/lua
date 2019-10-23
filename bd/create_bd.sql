@@ -11,13 +11,6 @@ CREATE DATABASE lua
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
 
-
--- CRIAÇÃO DA SEQUENCIA
----------------------------------------------------------------------------
-create sequence categoria_id_categoria_seq
-	as integer
-	maxvalue 2147483647;
-
 -- TABELA DE LOCAIS DO EQUIPAMENTO
 ---------------------------------------------------------------------------
 create table local
@@ -43,7 +36,7 @@ comment on column local.descricao is 'Descrição/Observações a respeito do lo
 ---------------------------------------------------------------------------
 create table categoria
 (
-	id_categoria integer default nextval('categoria_id_categoria_seq'::regclass) not null
+	id_categoria serial not null
 		constraint categoria_pk
 			primary key,
 	nome varchar(50)
@@ -109,14 +102,10 @@ comment on column evento.hora is 'Hora da ultima atuazação';
 
 -- TABELA DE USUÁRIOS
 ---------------------------------------------------------------------------
-
-create sequence usuario_id_usuario_seq as integer;
-alter sequence usuario_id_usuario_seq owner to postgres;
-
-create table usuarios
+create table if not exists usuario
 (
-    id_usuario integer default nextval('usuario_id_usuario_seq'::regclass) not null
-        constraint usuarios_pk
+    id_usuario serial not null
+        constraint usuario_pk
             primary key,
     login varchar(20) not null,
     senha varchar(50) not null,
@@ -125,13 +114,68 @@ create table usuarios
     email varchar
 );
 
-comment on column usuarios.login is 'Login do usuario, deve ser unico.';
-comment on column usuarios.permissoes is 'Permissoes do usuario.';
+comment on column usuario.login is 'Login do usuario, deve ser unico.';
+comment on column usuario.permissoes is 'Permissoes do usuario.';
 
-alter table usuarios owner to postgres;
+alter table usuario owner to postgres;
 
-create unique index usuarios_login_uindex on usuarios (login);
-create unique index usuarios_email_uindex on usuarios (email);
+create unique index if not exists usuarios_login_uindex on usuario (login);
+create unique index if not exists usuarios_email_uindex on usuario (email);
+
+
+-- TABELA DE TIPO SENSOR
+---------------------------------------------------------------------------
+create table tipo_sensor
+(
+    id_tipo_sensor serial not null
+        constraint tipo_sensor_pk
+            primary key,
+    descricao varchar,
+    unidade varchar,
+    sigla_unidade varchar
+);
+
+comment on table tipo_sensor is 'Tabela que contém os diferentes tipos de sensores e seus atributos.';
+comment on column tipo_sensor.unidade is 'Unidade de medida do sensor';
+comment on column tipo_sensor.sigla_unidade is 'Sigla da unidade de medida.';
+
+-- TABELA DE SENSOR
+---------------------------------------------------------------------------
+create table sensor
+(
+    id_sensor bigserial not null
+        constraint sensor_pk
+            primary key,
+    id_tipo_sensor integer not null
+        constraint sensor_tipo_sensor_id_tipo_sensor_fk
+            references tipo_sensor,
+    id_equipamento integer
+        constraint sensor_equipamento_id_equipamento_fk
+            references equipamento,
+    medicao numeric,
+    id_local integer
+        constraint sensor_local_id_local_fk
+            references local
+);
+
+comment on table sensor is 'Tabela responsavel por armazenar todos os sensores do sistema';
+comment on column sensor.id_tipo_sensor is 'Identificador para o tipo de sensor.';
+comment on column sensor.id_equipamento is 'Identificador do equipamento ao qual o sensor poderá está atrelado.';
+comment on column sensor.medicao is 'Valor real medido (ultima medição) pelo sensor na unidade padrão do mesmo.';
+comment on column sensor.id_local is 'Identificador ao qual o sensor poderá está atrelado.';
+
+-- HISTORICO DE MEDIÇÕES
+---------------------------------------------------------------------------
+create table historico_medicoes
+(
+    id_sensor bigint not null
+        constraint historico_medicoes_sensor_id_sensor_fk
+            references sensor,
+    hora_medicao timestamp default now(),
+    medicao real
+);
+
+alter table historico_medicoes owner to postgres;
 
 -- FUNÇÕES
 ---------------------------------------------------------------------------

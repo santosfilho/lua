@@ -26,46 +26,46 @@ public class EquipamentoRepository {
      * @return
      */
     public List<EquipamentoDTO> getEquipamentos(Long idEquipamento, Long idLocal, Long tombamento, String nome, String marca, Integer status) {
-        String sql = " SELECT equipamento.*, local.localizacao, categoria.nome as categoria FROM equipamento equipamento"
-            + " JOIN local local on (local.id_local = equipamento.id_local)"
-            + " JOIN categoria categoria on (categoria.id_categoria = equipamento.id_categoria)"
-            + " WHERE 1=1 ";
+        StringBuilder sql = new StringBuilder(" SELECT equipamento.*, local.localizacao, categoria.nome as categoria FROM equipamento equipamento ");
+        sql.append(" JOIN local local on (local.id_local = equipamento.id_local) ");
+        sql.append(" JOIN categoria categoria on (categoria.id_categoria = equipamento.id_categoria) ");
+        sql.append(" WHERE 1=1 ");
 
         List<Object> params = new ArrayList<>();
 
         if (idEquipamento != null) {
-            sql += " AND id_equipamento = ? ";
+            sql.append(" AND id_equipamento = ? ");
             params.add(idEquipamento);
         }
 
         if (idLocal != null) {
-            sql += " AND id_local = ? ";
+            sql.append(" AND id_local = ? ");
             params.add(idLocal);
         }
 
         if (tombamento != null) {
-            sql += " AND tombamento = ? ";
+            sql.append(" AND tombamento = ? ");
             params.add(tombamento);
         }
 
         if (nome != null && !nome.isEmpty()) {
-            sql += " AND sem_acento(nome) ILIKE sem_acento('%' || ? || '%') ";
+            sql.append(" AND sem_acento(nome) ILIKE sem_acento('%' || ? || '%') ");
             params.add(nome);
         }
 
         if (marca != null && !marca.isEmpty()) {
-            sql += " AND sem_acento(marca) ILIKE sem_acento('%' || ? || '%') ";
+            sql.append(" AND sem_acento(marca) ILIKE sem_acento('%' || ? || '%') ");
             params.add(marca);
         }
 
         if (status != null) {
-            sql += " AND status = ? ";
+            sql.append(" AND status = ? ");
             params.add(status);
         }
 
-        sql += " ORDER BY id_equipamento ASC ";
+        sql.append(" ORDER BY id_equipamento ASC ");
 
-        return jdbcTemplate.query(sql, params.toArray(), new BeanPropertyRowMapper(EquipamentoDTO.class));
+        return jdbcTemplate.query(sql.toString(), params.toArray(), new BeanPropertyRowMapper(EquipamentoDTO.class));
     }
 
 

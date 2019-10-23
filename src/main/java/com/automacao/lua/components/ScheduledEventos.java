@@ -26,7 +26,7 @@ import org.springframework.scheduling.support.CronSequenceGenerator;
 @EnableScheduling
 public class ScheduledEventos {
 
-    //America/Recife
+    //America/Recife''
     //private static final String TIME_ZONE = "America/Sao_Paulo";
 
     @Autowired
@@ -38,7 +38,7 @@ public class ScheduledEventos {
     private static final Logger logger = LoggerFactory.getLogger(ScheduledEventos.class);
     
     //Delay em milisegundos, 1 segundo são 1000 milisegundos.
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 2000)
     public void executar() {
         //TODO: Deve varrer todos eventos que o fimCron é menor que a data atual e atualizar o a hora do próximo evento
         // a partir do valor do cron
@@ -98,7 +98,7 @@ public class ScheduledEventos {
                         mensagem.append(" pela ultima vez em " + evento.getHora().toString());
                         mensagem.append("\n Caso queira que o evento não pare de ocorrer atualize o tempo de fim do evento");
 
-                        javaMailApp.sendEmail(emails, evento.getNomeEquipamento() + ": Evento chegando ao fim.", mensagem.toString());
+                        //javaMailApp.sendEmail(emails, evento.getNomeEquipamento() + ": Evento chegando ao fim.", mensagem.toString());
 
                     } else if(evento.getFimCron() != null && (evento.getHora().getTime() > evento.getFimCron().getTime())){
                         //Remove o evento caso seja sua ultima execução
