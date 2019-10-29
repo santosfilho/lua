@@ -177,6 +177,32 @@ create table historico_medicoes
 
 alter table historico_medicoes owner to postgres;
 
+-- ALARME DO SENSOR
+---------------------------------------------------------------------------
+create table alarme_sensor
+(
+    id_alarme bigserial not null
+        constraint alarme_sensor_pk
+            primary key,
+    id_equipamento bigint not null
+        constraint alarme_sensor_equipamento_id_equipamento_fk
+            references equipamento,
+    status integer,
+    id_sensor bigint not null
+        constraint alarme_sensor_sensor_id_sensor_fk
+            references sensor,
+    ativo boolean default true,
+    valor_disparo numeric,
+    condicao integer
+);
+
+comment on table alarme_sensor is 'Tabele responsável por armazenar os alarmes e as ações condicionadas aos valores dos sensores.';
+comment on column alarme_sensor.status is 'Novo Status do equipamento.';
+comment on column alarme_sensor.ativo is 'Indica se o alarme se encontra ativo.';
+comment on column alarme_sensor.condicao is '1-Igual, 2-Menor, 3-Maior, 4-Menor igual e 5-Maior Igual.';
+
+alter table alarme_sensor owner to postgres;
+
 -- FUNÇÕES
 ---------------------------------------------------------------------------
 create function sem_acento(text) returns text
