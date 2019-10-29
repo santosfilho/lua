@@ -53,34 +53,31 @@ public class SensorRepository {
 
     /**
      *
-     * @param idTipoSensor (Obrigatório)
-     * @param idEquipamento
-     * @param idLocal
      * @return
      */
-    public SensorDTO addSensor(Long idTipoSensor, Long idEquipamento, Long idLocal){
-        String sqlColunas = " INSERT INTO public.sensor (id_sensor ";
-        String sqlValores = " VALUES (DEFAULT ";
+    public SensorDTO addSensor(SensorDTO sensor){
+        String sqlColunas = " INSERT INTO public.sensor (id_sensor, medicao ";
+        String sqlValores = " VALUES (DEFAULT, 0 ";
         List<Object> params = new ArrayList<>();
 
-        if (idTipoSensor != null){
+        if (sensor.getIdTipoSensor() != null){
             sqlColunas += ", id_tipo_sensor ";
             sqlValores += ", ? ";
-            params.add(idTipoSensor);
+            params.add(sensor.getIdTipoSensor());
         } else {
             return null;
         }
 
-        if (idEquipamento != null){
+        if (sensor.getIdEquipamento() != null){
             sqlColunas += ", id_equipamento ";
             sqlValores += ", ? ";
-            params.add(idEquipamento);
+            params.add(sensor.getIdEquipamento());
         }
 
-        if (idLocal != null){
+        if (sensor.getIdLocal() != null){
             sqlColunas += ", id_local ";
             sqlValores += ", ? ";
-            params.add(idLocal);
+            params.add(sensor.getIdLocal());
         }
 
         sqlColunas += ") ";

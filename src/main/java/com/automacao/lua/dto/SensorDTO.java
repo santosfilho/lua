@@ -21,7 +21,7 @@ public class SensorDTO {
         this.idSensor = idSensor;
     }
 
-    @ApiModelProperty(name = "idSensor", value = "Identificador do sensor. ", dataType = "java.lang.Long")
+    @ApiModelProperty(name = "idSensor", value = "Identificador do sensor. ", dataType = "java.lang.Long", required = true)
     public Long getIdEquipamento() {
         return idEquipamento;
     }

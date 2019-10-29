@@ -38,4 +38,33 @@ public class SensorController {
     ){
         return ResponseEntity.status(HttpStatus.OK).body(sensorServices.getSensor(idSensor));
     }
+
+    @RequestMapping(method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Cadastra um sensor.", response = SensorDTO.class, httpMethod = "POST")
+    public ResponseEntity addEvento(
+            @ApiParam(name = "sensor", value = "Informações do sensor") @RequestBody SensorDTO sensor
+    ) throws Exception {
+        SensorDTO novoEvento = null;
+        
+        if (sensor != null && (sensor.getIdEquipamento() != null || sensor.getIdLocal() != null) && sensor.getIdTipoSensor() != null){
+            sensorServices.addSensor(sensor);
+        }
+
+        if (novoEvento != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(novoEvento);
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados de cadastro invalidos.");
+    }
+
+    @RequestMapping(value = "/{idSensor}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Deleta um Sensor.", response = SensorDTO.class, httpMethod = "DELETE")
+    public ResponseEntity deleteEvento(
+            @ApiParam(name = "idSensor", value = "Identificador do Sensor") @PathVariable(value = "idSensor ") Long idSensor
+    ){
+        if (sensorServices.removerSensor(idSensor) == 1)
+            return new ResponseEntity("Sensor removido com sucesso. ", HttpStatus.OK);
+
+        return new ResponseEntity("Sensor não encontrado. ", HttpStatus.BAD_REQUEST);
+    }
 }
