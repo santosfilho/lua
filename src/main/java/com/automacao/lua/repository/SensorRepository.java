@@ -15,7 +15,7 @@ public class SensorRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<SensorDTO> buscarSensores(Long idSensor, Long idTipoSensor, Long idEquipamento, Long idLocal, String siglaUnidadeMedicao){
+    public List<SensorDTO> buscarSensores(Long idSensor, Long idTipoSensor, Long idEquipamento, Long idLocal, String siglaUnidadeMedicao) {
         StringBuilder sql = new StringBuilder(" select sensor.id_sensor, sensor.id_tipo_sensor, sensor.id_equipamento, sensor.id_local, sensor.medicao, tipo.sigla_unidade, tipo.descricao " +
                 " FROM sensor sensor " +
                 " JOIN tipo_sensor tipo on tipo.id_tipo_sensor = sensor.id_tipo_sensor " +
@@ -23,27 +23,27 @@ public class SensorRepository {
 
         List<Object> params = new ArrayList<>();
 
-        if (idSensor != null){
+        if (idSensor != null) {
             sql.append(" AND sensor.id_sensor = ? ");
             params.add(idSensor);
         }
 
-        if (idTipoSensor != null){
+        if (idTipoSensor != null) {
             sql.append(" AND sensor.id_tipo_sensor = ? ");
             params.add(idTipoSensor);
         }
 
-        if (idEquipamento != null){
+        if (idEquipamento != null) {
             sql.append(" AND sensor.id_equipamento = ? ");
             params.add(idEquipamento);
         }
 
-        if (idLocal != null){
+        if (idLocal != null) {
             sql.append(" AND sensor.id_local = ? ");
             params.add(idLocal);
         }
 
-        if (siglaUnidadeMedicao != null){
+        if (siglaUnidadeMedicao != null) {
             sql.append(" AND tipo.sigla_unidade ILIKE ? ");
             params.add(siglaUnidadeMedicao);
         }
@@ -52,15 +52,14 @@ public class SensorRepository {
     }
 
     /**
-     *
      * @return
      */
-    public SensorDTO addSensor(SensorDTO sensor){
+    public SensorDTO addSensor(SensorDTO sensor) {
         String sqlColunas = " INSERT INTO public.sensor (id_sensor, medicao ";
         String sqlValores = " VALUES (DEFAULT, 0 ";
         List<Object> params = new ArrayList<>();
 
-        if (sensor.getIdTipoSensor() != null){
+        if (sensor.getIdTipoSensor() != null) {
             sqlColunas += ", id_tipo_sensor ";
             sqlValores += ", ? ";
             params.add(sensor.getIdTipoSensor());
@@ -68,13 +67,13 @@ public class SensorRepository {
             return null;
         }
 
-        if (sensor.getIdEquipamento() != null){
+        if (sensor.getIdEquipamento() != null) {
             sqlColunas += ", id_equipamento ";
             sqlValores += ", ? ";
             params.add(sensor.getIdEquipamento());
         }
 
-        if (sensor.getIdLocal() != null){
+        if (sensor.getIdLocal() != null) {
             sqlColunas += ", id_local ";
             sqlValores += ", ? ";
             params.add(sensor.getIdLocal());
@@ -85,44 +84,44 @@ public class SensorRepository {
 
         Long idSensor = jdbcTemplate.queryForObject(sqlColunas + sqlValores, params.toArray(), Long.class);
 
-        if (idSensor != null && idSensor > 0){
+        if (idSensor != null && idSensor > 0) {
             return buscarSensores(idSensor, null, null, null, null).get(0);
         }
 
         return null;
     }
 
-    public SensorDTO atualizarSensor(Long idSensor, Long idTipoSensor, Long idEquipamento, Long idLocal){
+    public SensorDTO atualizarSensor(SensorDTO sensor) {
         List<Object> params = new ArrayList<>();
         String sql = "UPDATE sensor SET id_sensor = ? ";
-        params.add(idSensor);
+        params.add(sensor.getIdSensor());
 
-        if (idTipoSensor != null){
+        if (sensor.getIdTipoSensor() != null) {
             sql += ", id_tipo_sensor = ? ";
-            params.add(idTipoSensor);
+            params.add(sensor.getIdTipoSensor());
         }
 
-        if (idEquipamento != null){
+        if (sensor.getIdEquipamento() != null) {
             sql += ", id_equipamento = ? ";
-            params.add(idEquipamento);
+            params.add(sensor.getIdEquipamento());
         }
 
-        if (idLocal != null){
+        if (sensor.getIdLocal() != null) {
             sql += ", id_local = ? ";
-            params.add(idLocal);
+            params.add(sensor.getIdLocal());
         }
 
         sql += " WHERE id_sensor = ? RETURNING id_sensor ";
-        params.add(idSensor);
+        params.add(sensor.getIdSensor());
 
-        if(jdbcTemplate.queryForObject(sql, params.toArray(), Long.class) != null){
-            return buscarSensores(idSensor, null, null, null, null).get(0);
+        if (jdbcTemplate.queryForObject(sql, params.toArray(), Long.class) != null) {
+            return buscarSensores(sensor.getIdSensor(), null, null, null, null).get(0);
         }
 
         return null;
     }
 
-    public int removerSensor(Long idSensor){
+    public int removerSensor(Long idSensor) {
         StringBuilder sql = new StringBuilder("DELETE FROM sensor WHERE id_sensor = ?");
 
         return jdbcTemplate.update(sql.toString(), new Object[]{idSensor});

@@ -34,4 +34,8 @@ public class SensorServices {
     public int removerSensor(Long idSensor) {
         return sensorRepository.removerSensor(idSensor);
     }
+
+    public SensorDTO atualizarSensor(SensorDTO sensor) {
+        return sensorRepository.atualizarSensor(sensor);
+    }
 }

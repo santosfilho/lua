@@ -41,13 +41,13 @@ public class SensorController {
 
     @RequestMapping(method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Cadastra um sensor.", response = SensorDTO.class, httpMethod = "POST")
-    public ResponseEntity addEvento(
+    public ResponseEntity addSensor(
             @ApiParam(name = "sensor", value = "Informações do sensor") @RequestBody SensorDTO sensor
     ) throws Exception {
         SensorDTO novoEvento = null;
-        
+
         if (sensor != null && (sensor.getIdEquipamento() != null || sensor.getIdLocal() != null) && sensor.getIdTipoSensor() != null){
-            sensorServices.addSensor(sensor);
+            novoEvento = sensorServices.addSensor(sensor);
         }
 
         if (novoEvento != null){
@@ -59,7 +59,7 @@ public class SensorController {
 
     @RequestMapping(value = "/{idSensor}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Deleta um Sensor.", response = SensorDTO.class, httpMethod = "DELETE")
-    public ResponseEntity deleteEvento(
+    public ResponseEntity deleteSensor(
             @ApiParam(name = "idSensor", value = "Identificador do Sensor") @PathVariable(value = "idSensor ") Long idSensor
     ){
         if (sensorServices.removerSensor(idSensor) == 1)
