@@ -38,7 +38,7 @@ public class ScheduledEventos {
     private static final Logger logger = LoggerFactory.getLogger(ScheduledEventos.class);
     
     //Delay em milisegundos, 1 segundo são 1000 milisegundos.
-    @Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedDelay = 500)
     public void executar() {
         //TODO: Deve varrer todos eventos que o fimCron é menor que a data atual e atualizar o a hora do próximo evento
         // a partir do valor do cron

@@ -165,12 +165,17 @@ comment on column sensor.medicao is 'Valor real medido (ultima medição) pelo s
 comment on column sensor.id_local is 'Identificador ao qual o sensor poderá está atrelado.';
 
 -- HISTORICO DE MEDIÇÕES
+-- AO SER DELETADO UM SENSOR, SEU HISTORICO É DELETADO EM CASCATA
 ---------------------------------------------------------------------------
 create table historico_medicoes
 (
+    id_medicao bigserial not null
+        constraint historico_medicoes_pk
+            primary key,
     id_sensor bigint not null
         constraint historico_medicoes_sensor_id_sensor_fk
-            references sensor,
+            references sensor
+            on delete cascade,
     hora_medicao timestamp default now(),
     medicao real
 );
@@ -178,6 +183,7 @@ create table historico_medicoes
 alter table historico_medicoes owner to postgres;
 
 -- ALARME DO SENSOR
+-- AO DELETAR UM EQUIPAMENTO OU SENSOR, O ALARME É DELETADO JUNTO
 ---------------------------------------------------------------------------
 create table alarme_sensor
 (
@@ -186,22 +192,20 @@ create table alarme_sensor
             primary key,
     id_equipamento bigint not null
         constraint alarme_sensor_equipamento_id_equipamento_fk
-            references equipamento,
+            references equipamento
+            on delete cascade,
     status integer,
     id_sensor bigint not null
         constraint alarme_sensor_sensor_id_sensor_fk
-            references sensor,
-    ativo boolean default true,
+            references sensor
+            on delete cascade,
     valor_disparo numeric,
     condicao integer
 );
 
-comment on table alarme_sensor is 'Tabele responsável por armazenar os alarmes e as ações condicionadas aos valores dos sensores.';
+comment on table alarme_sensor is 'Tabele responsáve por armazenar os alarmes e as ações condicionadas aos valores dos sensores.';
 comment on column alarme_sensor.status is 'Novo Status do equipamento.';
-comment on column alarme_sensor.ativo is 'Indica se o alarme se encontra ativo.';
 comment on column alarme_sensor.condicao is '1-Igual, 2-Menor, 3-Maior, 4-Menor igual e 5-Maior Igual.';
-
-alter table alarme_sensor owner to postgres;
 
 -- FUNÇÕES
 ---------------------------------------------------------------------------
