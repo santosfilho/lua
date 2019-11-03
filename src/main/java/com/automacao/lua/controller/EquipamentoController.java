@@ -58,7 +58,7 @@ public class EquipamentoController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao atualizar equipamento, verifique idLocal e idCategoria.");
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Cadastra um equipamento.", response = EquipamentoDTO.class, httpMethod = "POST")
     public ResponseEntity cadastrarEquipamento(
             @ApiParam(name = "Equipamento", value = "Equipamento") @RequestBody CadastroEquipamentoDTO equipamento
@@ -71,7 +71,7 @@ public class EquipamentoController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar equipamento, verifique idLocal e idCategoria.");
     }
 
-    @RequestMapping(value = "/{idEquipamento}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = "/{idEquipamento}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Deleta um equipamento", response = String.class, httpMethod = "DELETE")
     public ResponseEntity removerEquipamento(
            @ApiParam(name = "idEquipamento", value = "Identificador do equipamento") @PathVariable(value = "idEquipamento") Long idEquipamento

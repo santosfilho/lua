@@ -1,4 +1,4 @@
--- CRAIAÇÃO Database: lua
+-- CRIAÇÃO Database: lua
 ---------------------------------------------------------------------------
 -- DROP DATABASE lua;
 
@@ -81,6 +81,7 @@ comment on column equipamento.data_cadastro is 'Data do cadastro do equimento';
 comment on column equipamento.potencia is 'Potência do equipamento em Watts';
 comment on column equipamento.id_categoria is 'Identificador da categoria do equipamento';
 
+
 -- TABELA DE EVENTOS
 ---------------------------------------------------------------------------
 create table evento
@@ -138,6 +139,13 @@ create table tipo_sensor
 comment on table tipo_sensor is 'Tabela que contém os diferentes tipos de sensores e seus atributos.';
 comment on column tipo_sensor.unidade is 'Unidade de medida do sensor';
 comment on column tipo_sensor.sigla_unidade is 'Sigla da unidade de medida.';
+
+INSERT INTO tipo_sensor ("id_tipo_sensor", "descricao", "unidade", "sigla_unidade") VALUES (1, 'Voltímetro', 'Volts', 'V');
+INSERT INTO tipo_sensor ("id_tipo_sensor", "descricao", "unidade", "sigla_unidade") VALUES (2, 'Amperímetro', 'Ampere', 'A');
+INSERT INTO tipo_sensor ("id_tipo_sensor", "descricao", "unidade", "sigla_unidade") VALUES (3, 'Termometro', 'Celsius', '°C');
+INSERT INTO tipo_sensor ("id_tipo_sensor", "descricao", "unidade", "sigla_unidade") VALUES (4, 'Proximidade', 'Centímetros', 'cm');
+INSERT INTO tipo_sensor ("id_tipo_sensor", "descricao", "unidade", "sigla_unidade") VALUES (5, 'Sensor de gás inflamável', 'Partes por Milhão', 'ppm');
+
 
 -- TABELA DE SENSOR
 ---------------------------------------------------------------------------
@@ -200,12 +208,14 @@ create table alarme_sensor
             references sensor
             on delete cascade,
     valor_disparo numeric,
-    condicao integer
+    condicao integer,
+    notificar boolean default false
 );
 
 comment on table alarme_sensor is 'Tabele responsáve por armazenar os alarmes e as ações condicionadas aos valores dos sensores.';
 comment on column alarme_sensor.status is 'Novo Status do equipamento.';
 comment on column alarme_sensor.condicao is '1-Igual, 2-Menor, 3-Maior, 4-Menor igual e 5-Maior Igual.';
+comment on column alarme_sensor.notificar is 'Caso o alarme seja acionado deve ser enviado um e-mail para o responsavel.';
 
 -- FUNÇÕES
 ---------------------------------------------------------------------------

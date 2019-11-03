@@ -16,7 +16,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/equipamentos/categorias")
-@Api(value = "Equipamentos", description = "Serviço referente os equipamentos", tags = "Categoria")
+@Api(value = "Equipamentos", description = "Serviço referente os equipamentos", tags = "Categorias de equipamento")
 public class CategoriaController {
 
     @Autowired
