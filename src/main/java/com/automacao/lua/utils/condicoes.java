@@ -1,4 +1,4 @@
-package com.automacao.lua.dto;
+package com.automacao.lua.utils;
 
 public enum condicoes {
     IGUAL(1),

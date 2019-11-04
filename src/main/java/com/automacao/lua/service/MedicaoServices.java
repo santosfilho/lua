@@ -26,4 +26,8 @@ public class MedicaoServices {
         }
         return 0;
     }
+
+    public Double ultimaMedicaoSensor(Long idSensor){
+        return medicaoRepository.ultimaMedicaoSensor(idSensor);
+    }
 }

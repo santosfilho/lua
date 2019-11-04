@@ -17,7 +17,7 @@ public class JavaMailApp {
 
     private static final Logger logger = LoggerFactory.getLogger(JavaMailApp.class);
 
-    void sendEmail(List<String> emails, String titulo, String mensagem) {
+    void enviarEmail(List<String> emails, String titulo, String mensagem) {
         SimpleMailMessage msg = new SimpleMailMessage();
 
         if (emails != null && emails.size() > 0) {

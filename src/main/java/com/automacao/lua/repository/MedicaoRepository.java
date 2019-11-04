@@ -125,4 +125,9 @@ public class MedicaoRepository {
         return null;
     }
 
+    public Double ultimaMedicaoSensor(Long idSensor){
+        return jdbcTemplate.queryForObject(" SELECT medicao FROM sensor WHERE id_sensor = ?; ",
+                new Object[]{idSensor}, Double.class);
+    }
+
 }

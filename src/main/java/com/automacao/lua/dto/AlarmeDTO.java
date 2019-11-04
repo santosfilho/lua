@@ -13,6 +13,7 @@ public class AlarmeDTO {
     private Long idSensor;
     private Integer condicao;
     private Double valorDisparo;
+    private Boolean notificar;
 
     @ApiModelProperty(name = "idAlarme", value = "Identificador do Alarme", dataType = "java.lang.Long", required = true)
     public Long getIdAlarme() {
@@ -71,5 +72,14 @@ public class AlarmeDTO {
     @JsonIgnore
     public Boolean alarmeValido(){
         return getIdEquipamento() != null && getIdSensor() != null && getCondicao() != null && getStatus() != null && getIdAlarme() != null;
+    }
+
+    @ApiModelProperty(name = "notificar", value = "Caso o alarme seja acionado deve ser enviado um e-mail para o responsavel.", dataType = "java.lang.Boolean", required = true)
+    public Boolean getNotificar() {
+        return notificar;
+    }
+
+    public void setNotificar(Boolean notificar) {
+        this.notificar = notificar;
     }
 }
