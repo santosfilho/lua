@@ -65,7 +65,7 @@ public class EventoRepository {
         }
 
         if (fimCron != null) {
-            sql.append(" AND fim_cron >= ? ");
+            sql.append(" AND (fim_cron >= ? OR fim_cron is null) ");
             params.add(fimCron);
         }
 
