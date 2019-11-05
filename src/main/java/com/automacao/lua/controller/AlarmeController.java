@@ -23,8 +23,9 @@ public class AlarmeController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Retorna a list de alarmes existentes. ", response = AlarmeDTO.class, httpMethod = "GET")
     public ResponseEntity buscarAlarmes(
+            @ApiParam(name = "idSensor", value = "Identificador do sensor") @RequestParam(name = "idSensor", required = false) Long idSensor
     ){
-        return ResponseEntity.status(HttpStatus.OK).body(alarmeServices.getAlarmes());
+        return ResponseEntity.status(HttpStatus.OK).body(alarmeServices.getAlarmes(idSensor));
     }
 
     @GetMapping(value = "/{idAlarme}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -39,7 +40,7 @@ public class AlarmeController {
     @ApiOperation(value = "Cadastra um sensor.", response = AlarmeDTO.class, httpMethod = "POST")
     public ResponseEntity addAlarme(
             @ApiParam(name = "sensor", value = "Informações do sensor") @RequestBody AlarmeDTO alarme
-    ) throws Exception {
+    ) {
         AlarmeDTO novoAlarme = null;
 
         if (alarme != null && alarme.alarmeValido()){

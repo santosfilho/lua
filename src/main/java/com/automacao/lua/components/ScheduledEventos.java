@@ -35,15 +35,6 @@ public class ScheduledEventos {
     private EventoService eventoService;
 
     @Autowired
-    private AlarmeServices alarmeServices;
-
-    @Autowired
-    private MedicaoServices medicaoServices;
-
-    @Autowired
-    private EquipamentoServices equipamentoServices;
-
-    @Autowired
     private JavaMailApp javaMailApp;
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduledEventos.class);
@@ -53,62 +44,9 @@ public class ScheduledEventos {
     public void executar() {
 
         Timestamp horaAtual = new Timestamp(System.currentTimeMillis());
-
         List<EventoDTO> eventos = eventoService.getEventos(null, null, horaAtual, null, horaAtual);
-        List<AlarmeDTO> alarmes = alarmeServices.getAlarmes();
 
-        verificarAlarmes(alarmes);
         executarEventos(eventos);
-    }
-
-    /**
-     * Verifica se o alarme deve ser executado ou não e o executa, assim como se for o caso,
-     * notifica ao usuario.
-     *
-     * @param alarmes recebe todos os alarmes cadastrados
-     */
-    private void verificarAlarmes(List<AlarmeDTO> alarmes) {
-        for (AlarmeDTO alarme : alarmes) {
-            Double medicao = medicaoServices.ultimaMedicaoSensor(alarme.getIdSensor());
-            boolean exec = false;
-
-            switch (alarme.getCondicao()) {
-                case 1: // IGUAL
-                    exec = alarme.getValorDisparo().equals(medicao);
-                    break;
-                case 2: // MENOR
-                    exec = alarme.getValorDisparo() < medicao;
-                    break;
-                case 3: // MAIOR
-                    exec = alarme.getValorDisparo() > medicao;
-                    break;
-                case 4: // MENOR IGUAL
-                    exec = alarme.getValorDisparo() <= medicao;
-                    break;
-                case 5: // MAIOR IGUAL
-                    exec = alarme.getValorDisparo() >= medicao;
-                    break;
-                default:
-                    break;
-            }
-
-            if (exec) {
-                equipamentoServices.mudarStatus(alarme.getIdEquipamento(), alarme.getStatus());
-
-                if (alarme.getNotificar()) {
-                    List<String> emails = new ArrayList<>();
-                    emails.add("josefilhocnrn@gmail.com");
-
-                    StringBuilder mensagem = new StringBuilder();
-                    mensagem.append("Equipamento: ").append(equipamentoServices.getEquipamento(alarme.getIdEquipamento()).getNome());
-                    mensagem.append(".\n").append(alarme.getStatus() == 1 ? "LIGOU" : "DESLIGOU");
-                    mensagem.append("\n Caso queira que o evento não pare de ocorrer atualize o tempo de fim do evento");
-
-                    javaMailApp.enviarEmail(emails, "Alarme disparou!! ", mensagem.toString());
-
-                }
-            }
-        }
     }
 
     /**

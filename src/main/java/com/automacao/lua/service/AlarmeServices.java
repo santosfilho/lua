@@ -15,13 +15,13 @@ public class AlarmeServices {
     @Autowired
     private AlarmeRepository alarmeRepository;
 
-    public List<AlarmeDTO> getAlarmes(){
-        return alarmeRepository.burcarAlarme(null);
+    public List<AlarmeDTO> getAlarmes(Long idSensor){
+        return alarmeRepository.burcarAlarme(null, idSensor);
     }
 
     public AlarmeDTO getAlarme(Long idAlarme){
-        List<AlarmeDTO> alarme = alarmeRepository.burcarAlarme(idAlarme);
-        if (alarme != null && alarme.size() > 0){
+        List<AlarmeDTO> alarme = alarmeRepository.burcarAlarme(idAlarme, null);
+        if (alarme != null && !alarme.isEmpty()){
             return alarme.get(0);
         }
         return null;
@@ -38,4 +38,19 @@ public class AlarmeServices {
     public int removerAlarme(Long idAlarme){
         return alarmeRepository.removerAlarme(idAlarme);
     }
+
+    /**
+     * Verifica se os alarmes deve ser executado ou não para determinado idSensor.
+     *
+     * @param idSensor deverá ser usado para filtra os alarmes vinculados ao sensor.
+     */
+    public void verificarAlarmes(Long idSensor) {
+        List<AlarmeDTO> alarmes = getAlarmes(idSensor);
+        verificarAlarmes(alarmes);
+    }
+
+    public void verificarAlarmes(List<AlarmeDTO> alarmes){
+        alarmeRepository.verificarAlarmes(alarmes);
+    }
+
 }

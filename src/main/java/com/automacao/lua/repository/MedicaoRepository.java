@@ -2,6 +2,7 @@ package com.automacao.lua.repository;
 
 import com.automacao.lua.dto.MedicaoDTO;
 import com.automacao.lua.dto.MedicaoDetalhadaDTO;
+import com.automacao.lua.service.AlarmeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -21,6 +22,9 @@ public class MedicaoRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private AlarmeServices alarmeServices;
 
     /**
      * Quando for adicionada uma medição, ele verá a anterior e a hora que foi adicionada e será salvo a média entre elas.
@@ -48,6 +52,7 @@ public class MedicaoRepository {
 
         try {
             idTipoSensor = jdbcTemplate.queryForObject(sql.toString(), new Object[]{medicao, idSensor}, Integer.class);
+            alarmeServices.verificarAlarmes(idSensor);
         } catch (EmptyResultDataAccessException ex) {
             return 0;
         }

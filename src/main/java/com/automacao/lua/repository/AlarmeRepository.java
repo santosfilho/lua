@@ -1,6 +1,9 @@
 package com.automacao.lua.repository;
 
+import com.automacao.lua.components.JavaMailApp;
 import com.automacao.lua.dto.AlarmeDTO;
+import com.automacao.lua.service.EquipamentoServices;
+import com.automacao.lua.service.MedicaoServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,13 +18,27 @@ public class AlarmeRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<AlarmeDTO> burcarAlarme(Long idAlarme) {
+    @Autowired
+    private EquipamentoServices equipamentoServices;
+
+    @Autowired
+    private MedicaoServices medicaoServices;
+
+    @Autowired
+    private JavaMailApp javaMailApp;
+
+    public List<AlarmeDTO> burcarAlarme(Long idAlarme, Long idSensor) {
         StringBuilder sql = new StringBuilder("SELECT * FROM alarme_sensor WHERE 1=1 ");
         List<Object> params = new ArrayList<>();
 
         if (idAlarme != null) {
             sql.append(" AND id_alarme = ? ");
             params.add(idAlarme);
+        }
+
+        if (idSensor != null) {
+            sql.append(" AND id_sensor = ? ");
+            params.add(idSensor);
         }
 
         return jdbcTemplate.query(sql.toString(), params.toArray(), new BeanPropertyRowMapper<>(AlarmeDTO.class));
@@ -68,7 +85,7 @@ public class AlarmeRepository {
         Long idAlarme = jdbcTemplate.queryForObject(sqlColunas + sqlValores, params.toArray(), Long.class);
 
         if (idAlarme != null && idAlarme > 0) {
-            return burcarAlarme(idAlarme).get(0);
+            return burcarAlarme(idAlarme, null).get(0);
         }
 
         return null;
@@ -109,7 +126,7 @@ public class AlarmeRepository {
         params.add(alarme.getIdAlarme());
 
         if (jdbcTemplate.queryForObject(sql, params.toArray(), Long.class) != null) {
-            return burcarAlarme(alarme.getIdAlarme()).get(0);
+            return burcarAlarme(alarme.getIdAlarme(), null).get(0);
         }
 
         return null;
@@ -120,4 +137,56 @@ public class AlarmeRepository {
 
         return jdbcTemplate.update(sql.toString(), new Object[]{idAlarme});
     }
+
+    /**
+     * Verifica se o alarme deve ser executado ou não e o executa, assim como se for o caso,
+     * notifica ao usuario.
+     *
+     * @param alarmes recebe todos os alarmes cadastrados
+     */
+    public void verificarAlarmes(List<AlarmeDTO> alarmes) {
+        for (AlarmeDTO alarme : alarmes) {
+            Double medicao = medicaoServices.ultimaMedicaoSensor(alarme.getIdSensor());
+            boolean exec = false;
+
+            switch (alarme.getCondicao()) {
+                case 1: // IGUAL
+                    exec = alarme.getValorDisparo().equals(medicao);
+                    break;
+                case 2: // MENOR
+                    exec = alarme.getValorDisparo() < medicao;
+                    break;
+                case 3: // MAIOR
+                    exec = alarme.getValorDisparo() > medicao;
+                    break;
+                case 4: // MENOR IGUAL
+                    exec = alarme.getValorDisparo() <= medicao;
+                    break;
+                case 5: // MAIOR IGUAL
+                    exec = alarme.getValorDisparo() >= medicao;
+                    break;
+                default:
+                    break;
+            }
+
+            if (exec) {
+                equipamentoServices.mudarStatus(alarme.getIdEquipamento(), alarme.getStatus());
+
+                if (alarme.getNotificar()) {
+                    List<String> emails = new ArrayList<>();
+                    emails.add("josefilhocnrn@gmail.com");
+
+                    StringBuilder mensagem = new StringBuilder();
+                    mensagem.append("Equipamento: ").append(equipamentoServices.getEquipamento(alarme.getIdEquipamento()).getNome());
+                    mensagem.append(".\n").append(alarme.getStatus() == 1 ? "LIGOU" : "DESLIGOU");
+                    mensagem.append("\n Caso queira que o evento não pare de ocorrer atualize o tempo de fim do evento");
+
+                    javaMailApp.enviarEmail(emails, "Alarme disparou!! ", mensagem.toString());
+
+                }
+            }
+        }
+    }
+
+
 }
