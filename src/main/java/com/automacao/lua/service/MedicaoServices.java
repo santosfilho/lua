@@ -22,9 +22,13 @@ public class MedicaoServices {
 
     public int addMedicaoSensor(MedicaoDetalhadaDTO medicao) {
         if (medicao != null && medicao.getIdSensor() != null && medicao.getMedicao() != null) {
-            return medicaoRepository.addMedicaoSensor(medicao.getIdSensor(), medicao.getMedicao());
+            return medicaoRepository.addMedicaoSensor(medicao.getIdSensor(), medicao.getMedicao(), false);
         }
         return 0;
+    }
+
+    public void persistirMedicaoSensor(Long idSensor, Double medicao){
+        medicaoRepository.addMedicaoSensor(idSensor, medicao, true);
     }
 
     public Double ultimaMedicaoSensor(Long idSensor){
