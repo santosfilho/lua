@@ -36,7 +36,7 @@ public class AlarmeController {
         return ResponseEntity.status(HttpStatus.OK).body(alarmeServices.getAlarme(idAlarme));
     }
 
-    @RequestMapping(method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Cadastra um sensor.", response = AlarmeDTO.class, httpMethod = "POST")
     public ResponseEntity addAlarme(
             @ApiParam(name = "sensor", value = "Informações do sensor") @RequestBody AlarmeDTO alarme

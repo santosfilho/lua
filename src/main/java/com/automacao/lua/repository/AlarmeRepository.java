@@ -79,6 +79,12 @@ public class AlarmeRepository {
             params.add(alarme.getCondicao());
         }
 
+        if (alarme.getNotificar() != null) {
+            sqlColunas += ", notificar ";
+            sqlValores += ", ? ";
+            params.add(alarme.getNotificar());
+        }
+
         sqlColunas += ") ";
         sqlValores += ") RETURNING id_alarme;";
 
