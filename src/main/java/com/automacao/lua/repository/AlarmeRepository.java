@@ -179,7 +179,7 @@ public class AlarmeRepository {
                     StringBuilder mensagem = new StringBuilder();
                     mensagem.append("Equipamento: ").append(equipamentoServices.getEquipamento(alarme.getIdEquipamento()).getNome());
                     mensagem.append(".\n").append(alarme.getStatus() == 1 ? "LIGOU" : "DESLIGOU");
-                    mensagem.append("\n Caso queira que o evento não pare de ocorrer atualize o tempo de fim do evento");
+                    mensagem.append("\n Caso não queira ser notificado, desmarque a opção de notificar de alarme.");
 
                     javaMailApp.enviarEmail(emails, "Alarme disparou!! ", mensagem.toString());
 

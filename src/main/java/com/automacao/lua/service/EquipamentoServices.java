@@ -25,7 +25,13 @@ public class EquipamentoServices {
 
     public int mudarStatus(Long idEquipamento, int novoStatus){
         if (novoStatus >= -1 && novoStatus <= 1)
-            return equipamentoRepository.mudarStatus(idEquipamento, novoStatus);
+            return equipamentoRepository.mudarStatus(idEquipamento, novoStatus, false);
+        return 0;
+    }
+
+    public int mudarStatusViaCallback(Long idEquipamento, int novoStatus){
+        if (novoStatus >= -1 && novoStatus <= 1)
+            return equipamentoRepository.mudarStatus(idEquipamento, novoStatus, true);
         return 0;
     }
 

@@ -92,12 +92,16 @@ public class EquipamentoRepository {
      * @param novoStatus Status que o equipamento deve receber.
      * @return 0 caso tenha falhado e 1 caso tenha obtido sucesso.
      */
-    public int mudarStatus(Long idEquipamento, int novoStatus) {
+    public int mudarStatus(Long idEquipamento, int novoStatus, boolean interno) {
         int sucesso = 0;
         if (idEquipamento != null) {
             try {
-                if (mqttApp.enviarMensagem(idEquipamento, novoStatus)) {
+                if (interno) {
                     sucesso = jdbcTemplate.update("UPDATE equipamento SET status = ? WHERE equipamento.id_equipamento = ? ", novoStatus, idEquipamento);
+                } else {
+                    if (mqttApp.enviarMensagem(idEquipamento, novoStatus)) {
+                        sucesso = jdbcTemplate.update("UPDATE equipamento SET status = ? WHERE equipamento.id_equipamento = ? ", novoStatus, idEquipamento);
+                    }
                 }
             } catch (Exception e) {
                 LOGGER.error(e.toString());
