@@ -1,11 +1,5 @@
 package com.automacao.lua.components;
 
-import com.automacao.lua.config.Mqtt;
-import com.automacao.lua.dto.AlarmeDTO;
-import com.automacao.lua.model.MqttSubscribeModel;
-import com.automacao.lua.service.AlarmeServices;
-import com.automacao.lua.service.EquipamentoServices;
-import com.automacao.lua.service.MedicaoServices;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +14,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+
 
 import org.springframework.scheduling.support.CronSequenceGenerator;
 
@@ -40,22 +33,19 @@ public class ScheduledEventos {
     private EventoService eventoService;
 
     @Autowired
-    private MedicaoServices medicaoServices;
-
-    @Autowired
     private JavaMailApp javaMailApp;
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduledEventos.class);
 
     //Delay em milisegundos, 1 segundo são 1000 milisegundos.
     @Scheduled(fixedDelay = 1000)
-    public void executar() {
+    public void executar() throws MqttException {
 
         Timestamp horaAtual = new Timestamp(System.currentTimeMillis());
         List<EventoDTO> eventos = eventoService.getEventos(null, null, horaAtual, null, horaAtual);
 
         executarEventos(eventos);
-        escutarMedicoes();
+        //escutarMedicoes();
     }
 
     /**
@@ -87,7 +77,7 @@ public class ScheduledEventos {
         for (EventoDTO evento : eventos) {
             if (imprimirCron) logger.info("idEvento: " + evento.getIdEvento() + " | hora antiga: " + evento.getHora());
 
-            if (evento.getCron() != null && !evento.getCron().isEmpty()) {
+            if (evento.getCron() != null && !evento.getCron().isEmpty() ) {
                 try {
                     CronSequenceGenerator gerador = new CronSequenceGenerator(evento.getCron());
 
@@ -123,36 +113,6 @@ public class ScheduledEventos {
             }
         }
 
-        if (imprimirCron) logger.info("\n-------------------\n");
+        if (imprimirCron) logger.info("-------------------\n");
     }
-
-    private void escutarMedicoes() {
-
-        try {
-            List<MqttSubscribeModel> messages = new ArrayList<>();
-            CountDownLatch countDownLatch = new CountDownLatch(10);
-            Mqtt.getInstance().subscribeWithResponse("sensor_data", (s, mqttMessage) -> {
-                MqttSubscribeModel mqttSubscribeModel = new MqttSubscribeModel();
-                mqttSubscribeModel.setId(mqttMessage.getId());
-                mqttSubscribeModel.setMessage(new String(mqttMessage.getPayload()));
-                mqttSubscribeModel.setQos(mqttMessage.getQos());
-                messages.add(mqttSubscribeModel);
-                countDownLatch.countDown();
-            });
-
-            countDownLatch.await(1000, TimeUnit.MILLISECONDS);
-
-            if (!messages.isEmpty())
-                System.out.println(messages.get(0).getMessage());
-
-            //medicaoServices.persistirMedicaoSensor(1, 0.0);
-
-        } catch (MqttException me) {
-            me.printStackTrace();
-        }catch (InterruptedException ie){
-            ie.printStackTrace();
-        }
-
-    }
-
 }

@@ -34,12 +34,22 @@ public class MedicaoController {
         return ResponseEntity.status(HttpStatus.OK).body(medicaoServices.buscarMedicoes(idSensor, inicio, fim));
     }
 
+    /**
+     * Função não deverá ser usada, a adição de qualquer medição deve ser realizada via mensagem MQTT enviadas ao topico "sensor_data" com a seguinte estrutura:
+     *
+     * {
+     *     idSensor: 0,
+     *     medicao: 0.0
+     * }
+     *
+     * @param medicao
+     * @return
+     */
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Adiciona uma medicao para o sensor.", response = MedicaoDetalhadaDTO.class, httpMethod = "POST")
+    @ApiOperation(value = "Adiciona uma medicao para o sensor.", response = MedicaoDetalhadaDTO.class, httpMethod = "POST", hidden = true)
     public ResponseEntity addMedicao(
             @ApiParam(name = "Medicao", value = "Medicao") @RequestBody MedicaoDetalhadaDTO medicao
     ) {
-
         if (medicaoServices.addMedicaoSensor(medicao) > 0)
             return ResponseEntity.status(HttpStatus.CREATED).body("");
 

@@ -214,6 +214,7 @@ create table alarme_sensor
 
 comment on table alarme_sensor is 'Tabele responsáve por armazenar os alarmes e as ações condicionadas aos valores dos sensores.';
 comment on column alarme_sensor.status is 'Novo Status do equipamento.';
+comment on column alarme_sensor.valor_disparo is 'Valor de referencia para a medicao e disparo do alarme. Ex.: medicao deve ser MENOR que valor_disparo.';
 comment on column alarme_sensor.condicao is '1-Igual, 2-Menor, 3-Maior, 4-Menor igual e 5-Maior Igual.';
 comment on column alarme_sensor.notificar is 'Caso o alarme seja acionado deve ser enviado um e-mail para o responsavel.';
 

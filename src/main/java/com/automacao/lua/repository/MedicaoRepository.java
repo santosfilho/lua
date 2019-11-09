@@ -1,13 +1,10 @@
 package com.automacao.lua.repository;
 
-import com.automacao.lua.config.Mqtt;
 import com.automacao.lua.dto.MedicaoDTO;
 import com.automacao.lua.dto.MedicaoDetalhadaDTO;
-import com.automacao.lua.model.MqttPublishModel;
 import com.automacao.lua.service.AlarmeServices;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -31,19 +28,7 @@ public class MedicaoRepository {
     @Autowired
     private AlarmeServices alarmeServices;
 
-    /*public void publishMessage(messagePublishModel,
-                               BindingResult bindingResult) throws org.eclipse.paho.client.mqttv3.MqttException {
-        if (bindingResult.hasErrors()) {
-            throw new MqttException(ExceptionMessages.SOME_PARAMETERS_INVALID);
-        }
-
-        MqttMessage mqttMessage = new MqttMessage(messagePublishModel.getMessage().getBytes());
-        mqttMessage.setQos(messagePublishModel.getQos());
-        mqttMessage.setRetained(messagePublishModel.getRetained());
-
-        Mqtt.getInstance().publish(messagePublishModel.getTopic(), mqttMessage);
-    }*/
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(MedicaoRepository.class);
 
     /**
      * Quando for adicionada uma medição, ele verá a anterior e a hora que foi adicionada e será salvo a média entre elas.
@@ -72,31 +57,14 @@ public class MedicaoRepository {
         try {
             idTipoSensor = jdbcTemplate.queryForObject(sql.toString(), new Object[]{medicao, idSensor}, Integer.class);
             alarmeServices.verificarAlarmes(idSensor);
-
-            /**if (bindingResult.hasErrors()) {
-                throw new MqttException(ExceptionMessages.SOME_PARAMETERS_INVALID);
-            }*/
-
-            if (interno || true) {
-                MqttPublishModel messagePublishModel = new MqttPublishModel(
-                        "sensor_data",
-                        "[{idSensor: " + idSensor + ", medicao: " + medicao.toString() + " }]",
-                        false,
-                        0);
-
-                MqttMessage mqttMessage = new MqttMessage(messagePublishModel.getMessage().getBytes());
-                mqttMessage.setQos(messagePublishModel.getQos());
-                mqttMessage.setRetained(messagePublishModel.getRetained());
-
-                Mqtt.getInstance().publish(messagePublishModel.getTopic(), mqttMessage);
-            }
-
         } catch (EmptyResultDataAccessException ex) {
+            LOGGER.error(ex.toString());
+            LOGGER.error(ex.getLocalizedMessage());
             return 0;
-        } catch (MqttPersistenceException e) {
-            e.printStackTrace();
-        } catch (MqttException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error(e.toString());
+            LOGGER.error(e.getLocalizedMessage());
+            return 0;
         }
 
         int success = (idTipoSensor > 0) ? 1 : 0;

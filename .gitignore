@@ -16,4 +16,5 @@ target/
 *.iws
 *.iml
 *.ipr
+### ECLIPSE PAHO ###
 *.lck

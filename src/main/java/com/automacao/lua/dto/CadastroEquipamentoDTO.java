@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * @author José dos Santos (josecnrn@gmail.com)
  * @since 22/07/19.
@@ -30,6 +34,25 @@ public class CadastroEquipamentoDTO {
     private Integer status;
 
     private Long idEquipamento;
+
+
+    /**
+     * @return Uma lista de objetos.
+     */
+    public List<Object> getListObjetos() {
+        List<Object> params = new ArrayList<>();
+        params.add(this.getNome());
+        params.add(this.getDescricao());
+        params.add(this.getMarca());
+        params.add(this.getModelo());
+        params.add(this.getIdLocal());
+        params.add(this.getTombamento());
+        params.add(new Date());
+        params.add(this.getPotencia());
+        params.add(this.getIdCategoria());
+
+        return params;
+    }
 
     @ApiModelProperty(name = "idEquipamento", value = "Identificador do equipamento", dataType = "java.lang.Long")
     public Long getIdEquipamento() {

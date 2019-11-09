@@ -1,7 +1,10 @@
 package com.automacao.lua.repository;
 
+import com.automacao.lua.components.MqttApp;
 import com.automacao.lua.dto.CadastroEquipamentoDTO;
 import com.automacao.lua.dto.EquipamentoDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +17,11 @@ public class EquipamentoRepository {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private MqttApp mqttApp;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EquipamentoRepository.class);
 
     /**
      * Função responsavel por retornar uma lista de equipamentos de acodo com os parametros passados
@@ -70,26 +78,40 @@ public class EquipamentoRepository {
 
 
     public EquipamentoDTO cadastrarEquipamento(CadastroEquipamentoDTO equipamento) {
-        int sucess = jdbcTemplate.update(" INSERT INTO public.equipamento VALUES (DEFAULT, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?) ", popularParametros(equipamento).toArray());
+        int sucess = jdbcTemplate.update(" INSERT INTO public.equipamento VALUES (DEFAULT, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?) ", equipamento.getListObjetos().toArray());
         if (sucess == 1)
             return ultimoEquipamento();
         return null;
     }
 
+    /**
+     * Metodo responsavel por alterar o status do equipamento atraves do envio da mensagem MQTT,
+     * caso sucesso no envio da mensagem o status do equipamento é atualizado no BD.
+     *
+     * @param idEquipamento Identificador do Equipamento.
+     * @param novoStatus Status que o equipamento deve receber.
+     * @return 0 caso tenha falhado e 1 caso tenha obtido sucesso.
+     */
     public int mudarStatus(Long idEquipamento, int novoStatus) {
         int sucesso = 0;
         if (idEquipamento != null) {
             try {
-                sucesso = jdbcTemplate.update("UPDATE equipamento SET status = ? WHERE equipamento.id_equipamento = ? ",
-                        new Object[]{novoStatus, idEquipamento});
-
+                if (mqttApp.enviarMensagem(idEquipamento, novoStatus)) {
+                    sucesso = jdbcTemplate.update("UPDATE equipamento SET status = ? WHERE equipamento.id_equipamento = ? ", novoStatus, idEquipamento);
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error(e.toString());
             }
         }
         return sucesso;
     }
 
+    /**
+     * Atualiza o equipamento de acordo com o idEquipamento passado em CadastroEquipamentoDTO
+     *
+     * @param equipamento CadastroEquipamentoDTO
+     * @return EquipamentoDTO
+     */
     public EquipamentoDTO atualizarEquipamento(CadastroEquipamentoDTO equipamento) {
         List<Object> params = new ArrayList<>();
         String sql = "UPDATE equipamento SET id_equipamento = ? ";
@@ -151,29 +173,19 @@ public class EquipamentoRepository {
 
     public int removerEquipamento(Long idEquipamento) {
         StringBuilder sql = new StringBuilder(" DELETE FROM equipamento WHERE id_equipamento = ? ");
-        return jdbcTemplate.update(sql.toString(), new Object[]{idEquipamento});
+        return jdbcTemplate.update(sql.toString(), idEquipamento);
     }
 
-    private List<Object> popularParametros(CadastroEquipamentoDTO equipamento) {
-        List<Object> params = new ArrayList<>();
-        params.add(equipamento.getNome());
-        params.add(equipamento.getDescricao());
-        params.add(equipamento.getMarca());
-        params.add(equipamento.getModelo());
-        params.add(equipamento.getIdLocal());
-        params.add(equipamento.getTombamento());
-        params.add(new Date());
-        params.add(equipamento.getPotencia());
-        params.add(equipamento.getIdCategoria());
-
-        return params;
-    }
-
+    /**
+     * @return O ultumo equipamento casdastrado
+     */
     private EquipamentoDTO ultimoEquipamento() {
-        return ((List<EquipamentoDTO>) jdbcTemplate.query(
-                "SELECT * FROM public.equipamento ORDER BY id_equipamento DESC LIMIT 1 ",
-                new Object[]{},
-                new BeanPropertyRowMapper(EquipamentoDTO.class))
-        ).get(0);
+        List<EquipamentoDTO> equipamentos = ((List<EquipamentoDTO>) jdbcTemplate.query("SELECT * FROM public.equipamento ORDER BY id_equipamento DESC LIMIT 1 ", new Object[]{}, new BeanPropertyRowMapper(EquipamentoDTO.class)));
+        if (equipamentos.isEmpty()){
+            return null;
+        } else {
+            return equipamentos.get(0);
+        }
+
     }
 }

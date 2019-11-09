@@ -3,6 +3,8 @@ package com.automacao.lua.service;
 import com.automacao.lua.dto.CadastroEquipamentoDTO;
 import com.automacao.lua.dto.EquipamentoDTO;
 import com.automacao.lua.repository.EquipamentoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,8 @@ import java.util.List;
 @Service
 @Transactional
 public class EquipamentoServices {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EquipamentoServices.class);
 
     @Autowired
     EquipamentoRepository equipamentoRepository;
@@ -41,8 +45,8 @@ public class EquipamentoServices {
             try {
                 return equipamentoRepository.cadastrarEquipamento(equipamento);
             } catch (Exception e) {
-                //System.out.println("Erro ao adicionar equipamento");
-                e.printStackTrace();
+                LOGGER.error(e.toString());
+                LOGGER.error(e.getLocalizedMessage());
                 return null;
             }
         }
