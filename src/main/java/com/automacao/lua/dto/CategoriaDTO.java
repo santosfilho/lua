@@ -1,7 +1,13 @@
 package com.automacao.lua.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * @author José dos Santos (josecnrn@gmail.com)
+ * @since 22/07/19.
+ */
+@ApiModel(value = "CategoriaDTO", description = "Representa uma categoria de equipamento elétrico")
 public class CategoriaDTO {
     private Long idCategoria;
 

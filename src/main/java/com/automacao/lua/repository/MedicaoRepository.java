@@ -125,7 +125,7 @@ public class MedicaoRepository {
     }
 
     public List<MedicaoDTO> buscarMedicoes(Long idSensor, Timestamp inicio, Timestamp fim) {
-        return jdbcTemplate.query(" SELECT hm.id_sensor, hm.hora_medicao, hm.medicao FROM historico_medicoes hm WHERE hm.id_sensor = ? AND hm.hora_medicao >= ? AND hm.hora_medicao <= ? ",
+        return jdbcTemplate.query(" SELECT hm.id_sensor, hm.hora_medicao, hm.medicao FROM historico_medicoes hm WHERE hm.id_sensor = ? AND hm.hora_medicao >= ? AND hm.hora_medicao <= ? ORDER BY hm.hora_medicao DESC",
                 new Object[]{idSensor, inicio, fim}, new BeanPropertyRowMapper<>(MedicaoDTO.class));
     }
 

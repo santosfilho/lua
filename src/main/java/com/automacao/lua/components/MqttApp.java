@@ -50,7 +50,7 @@ public class MqttApp {
             int qos[] = {1,0,0};
 
             myClient.subscribe(tocicos, qos);
-            LOGGER.error("CONECTADO AO BROKER COM SUCESSO! :D");
+            LOGGER.info("CONECTADO AO BROKER COM SUCESSO! :D");
         } catch (MqttException me){
             LOGGER.error("Erro ao estabelecer conexão com o Broker:");
             LOGGER.error(me.toString());
