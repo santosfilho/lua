@@ -11,7 +11,7 @@ import java.util.Date;
  * @author José dos Santos (josecnrn@gmail.com)
  * @since 22/07/19.
  */
-@ApiModel(value = "EquipamentoDTO", description = "Representa um equipamento elétrico")
+@ApiModel(value = "EquipamentoDTO", description = "Representa o equipamento elétrico alvo do controle/medição")
 public class EquipamentoDTO extends CadastroEquipamentoDTO{
 
     @JsonProperty("data_cadastro")

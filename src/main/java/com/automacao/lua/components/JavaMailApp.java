@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * @author José dos Santos Filho (josecnrn@gmail.com)
+ * @since 18/10/2019
+ */
 @Component
 public class JavaMailApp {
 

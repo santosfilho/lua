@@ -21,11 +21,11 @@ public class AlarmeController {
     private AlarmeServices alarmeServices;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Retorna a list de alarmes existentes. ", response = AlarmeDTO.class, httpMethod = "GET")
+    @ApiOperation(value = "Retorna uma lista com os alarmes existentes. ", response = AlarmeDTO.class, httpMethod = "GET")
     public ResponseEntity buscarAlarmes(
-            @ApiParam(name = "idSensor", value = "Identificador do sensor") @RequestParam(name = "idSensor", required = false) Long idSensor
+            @ApiParam(name = "idAlarme", value = "Identificador do Alarme") @RequestParam(name = "idSensor", required = false) Long idAlarme
     ){
-        return ResponseEntity.status(HttpStatus.OK).body(alarmeServices.getAlarmes(idSensor));
+        return ResponseEntity.status(HttpStatus.OK).body(alarmeServices.getAlarmes(idAlarme));
     }
 
     @GetMapping(value = "/{idAlarme}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -37,9 +37,9 @@ public class AlarmeController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Cadastra um sensor.", response = AlarmeDTO.class, httpMethod = "POST")
+    @ApiOperation(value = "Cadastra um Alarme.", response = AlarmeDTO.class, httpMethod = "POST")
     public ResponseEntity addAlarme(
-            @ApiParam(name = "sensor", value = "Informações do sensor") @RequestBody AlarmeDTO alarme
+            @ApiParam(name = "alarme", value = "Informações do Alarme") @RequestBody AlarmeDTO alarme
     ) {
         AlarmeDTO novoAlarme = null;
 
@@ -55,13 +55,13 @@ public class AlarmeController {
     }
 
     @RequestMapping(value = "/{idAlarme}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Deleta um Sensor.", response = AlarmeDTO.class, httpMethod = "DELETE")
+    @ApiOperation(value = "Deleta um Alarme.", response = AlarmeDTO.class, httpMethod = "DELETE")
     public ResponseEntity deleteAlarme(
             @ApiParam(name = "idAlarme", value = "Identificador do Alarme") @PathVariable(value = "idAlarme") Long idAlarme
     ){
         if (alarmeServices.removerAlarme(idAlarme) == 1)
-            return new ResponseEntity("Sensor removido com sucesso. ", HttpStatus.OK);
+            return new ResponseEntity("Alarme removido com sucesso. ", HttpStatus.OK);
 
-        return new ResponseEntity("Sensor não encontrado. ", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("Alarme não encontrado. ", HttpStatus.BAD_REQUEST);
     }
 }

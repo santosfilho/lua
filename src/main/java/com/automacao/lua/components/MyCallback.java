@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * Classe responsal por "escutar" as mensagens oriundos dos equipamentos conectados e realizar determinada ação.
+ *
+ * @author José dos Santos Filho (josecnrn@gmail.com)
+ * @since 09/11/2019
  */
 @Component
 public class MyCallback implements MqttCallback {
@@ -46,7 +49,7 @@ public class MyCallback implements MqttCallback {
                     SensorDataModel sensorDataModel = gson.fromJson(message.toString(), SensorDataModel.class);
                     medicaoServices.persistirMedicaoSensor(sensorDataModel.getIdSensor(), sensorDataModel.getMedicao());
                 } catch (JsonSyntaxException jse) {
-                    LOGGER.error("Erro na formatacao da mensagem, exemplo de sintex correta: {idSensor: 1, medicao: 5.2}.");
+                    LOGGER.error("Erro na formatacao da mensagem, exemplo de sintex correta: {\"idSensor\": 1, \"medicao\": 5.2}.");
                     LOGGER.error(jse.toString());
                 } catch (Exception e) {
                     LOGGER.error(e.toString());
@@ -66,7 +69,7 @@ public class MyCallback implements MqttCallback {
 
                     equipamentoServices.mudarStatusViaCallback(equipamentoStatusModel.getIdEquipamento(), equipamentoStatusModel.getStatus());
                 } catch (JsonSyntaxException jse) {
-                    LOGGER.error("Erro na formatacao da mensagem, exemplo de sintex correta: {idEquipamento: 1, status: 1}.");
+                    LOGGER.error("Erro na formatacao da mensagem, exemplo de sintex correta: {\"idEquipamento\": 1, \"status\": 1}.");
                     LOGGER.error(jse.toString());
                 } catch (Exception e) {
                     LOGGER.error(e.toString());

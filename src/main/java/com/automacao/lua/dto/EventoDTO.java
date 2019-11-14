@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.sql.Timestamp;
 
-@ApiModel(value = "EventoDTO", description = "Representa um evento")
+@ApiModel(value = "EventoDTO", description = "Representa uma determinada ação que deve ocorrer em momentos agendado")
 public class EventoDTO {
     private Long idEvento;
     private Long idEquipamento;

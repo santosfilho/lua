@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "AlarmeDTO", description = "Entidade responsável por armazenar os alarmes e as ações condicionadas aos valores dos sensores.")
+@ApiModel(value = "AlarmeDTO", description = "Representa uma determinada ação que deve acontecer de acordo com o estado dos sensores.")
 public class AlarmeDTO {
 
     private Long idAlarme;
