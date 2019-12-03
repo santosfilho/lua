@@ -5,7 +5,7 @@
 
 	<groupId>com.automacao</groupId>
 	<artifactId>lua</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<name>Lua</name>
 	<description>Lua project for Spring Boot</description>
 
